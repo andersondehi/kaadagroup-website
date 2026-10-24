@@ -1562,6 +1562,32 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
 .kc-fiche-tel .kc-tel{width:100%;border-width:7px;border-radius:30px}
 .kc-fiche-tel .kc-tel img{border-radius:23px}
 
+/* ---------- Loupe des captures réelles (pages produits) ---------- */
+.kc-zoomable{position:relative}
+.kc-zoomable img{cursor:zoom-in}
+.kc-zoom{position:absolute;right:10px;bottom:10px;z-index:2;display:grid;place-items:center;width:44px;height:44px;padding:0;border-radius:99px;border:1px solid var(--line-2);background:color-mix(in srgb,var(--surface) 92%,transparent);color:var(--ink);cursor:pointer;box-shadow:var(--ombre-s);transition:transform var(--mv-court),border-color var(--mv-court)}
+.kc-zoom svg{width:20px;height:20px}
+.kc-zoom:hover{border-color:var(--ink);transform:scale(1.06)}
+.kc-ecran.kc-zoomable .kc-zoom{bottom:auto;top:40px}
+.kc-tel.kc-zoomable{overflow:visible}
+.kc-tel.kc-zoomable .kc-zoom{right:-14px;bottom:24px}
+.kc-loupe{width:min(1400px,96vw);height:min(94vh,1000px);max-width:none;max-height:none;padding:0;border:1px solid var(--band-line);border-radius:var(--r-l);background:var(--band);color:var(--band-fg);--focus:#EC6508;overflow:hidden}
+.kc-loupe[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto;grid-template-columns:minmax(0,1fr)}
+.kc-loupe::backdrop{background:rgba(10,17,13,.82)}
+.kc-loupe-barre{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 12px 10px 20px;border-bottom:1px solid var(--band-line)}
+.kc-loupe-titre{flex:1;min-width:0;font-family:var(--f-titre);font-weight:700;font-size:1.05rem;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kc-loupe-outils{display:flex;gap:6px}
+.kc-loupe-outils button{display:grid;place-items:center;width:44px;height:44px;padding:0;border-radius:99px;border:1px solid var(--band-muted);background:none;color:var(--band-fg);cursor:pointer}
+.kc-loupe-outils button:hover{border-color:var(--band-fg)}
+.kc-loupe-outils svg{width:20px;height:20px}
+.kc-loupe-fermer{background:var(--orange)!important;border-color:var(--orange)!important;color:var(--on-orange)!important}
+.kc-loupe-zone{overflow:auto;display:flex;align-items:center;justify-content:center;padding:16px;min-height:0;background:#0A110D}
+.kc-loupe-zone img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;cursor:zoom-in;border-radius:8px;flex:none}
+.kc-loupe.zoome .kc-loupe-zone{align-items:flex-start;justify-content:flex-start}
+.kc-loupe.zoome .kc-loupe-zone img{max-width:none;max-height:none;height:auto;cursor:zoom-out}
+.kc-loupe-aide{margin:0;padding:8px 20px;font-family:var(--f-mono);font-size:12px;color:var(--band-muted);border-top:1px solid var(--band-line)}
+@media (max-width:760px){.kc-loupe{width:100vw;height:100dvh;border-radius:0;border:0}.kc-loupe-aide{display:none}}
+
 /* SANKORA:FIN */
 /* MODERNISATION:DEBUT */
 /* Modernisation 2026-10 · charte v2.2, chapitre 16 (jetons, mouvement, focus, états).
