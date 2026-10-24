@@ -63,9 +63,23 @@ jobs:
               print("Aucune page à signaler")
               raise SystemExit
           corps = json.dumps({"host": "kaadagroup.com", "key": KEY, "keyLocation": f"{SITE}/{KEY}.txt", "urlList": urls}).encode()
-          req = urllib.request.Request("https://api.indexnow.org/indexnow", data=corps,
-                                       headers={"Content-Type": "application/json; charset=utf-8"})
-          with urllib.request.urlopen(req, timeout=30) as r:
-              print("IndexNow :", r.status, "-", len(urls), "adresse(s)")
+          import time
+          ok = False
+          for essai in range(3):
+              for point in ("https://www.bing.com/indexnow", "https://api.indexnow.org/indexnow"):
+                  try:
+                      req = urllib.request.Request(point, data=corps, headers={"Content-Type": "application/json; charset=utf-8"})
+                      with urllib.request.urlopen(req, timeout=90) as r:
+                          print("IndexNow", point, ":", r.status, "-", len(urls), "adresse(s)")
+                          ok = r.status in (200, 202)
+                  except Exception as e:
+                      print("Échec", point, ":", e)
+                  if ok:
+                      break
+              if ok:
+                  break
+              time.sleep(30)
           print("\n".join(urls))
+          if not ok:
+              raise SystemExit("IndexNow injoignable")
           PY
