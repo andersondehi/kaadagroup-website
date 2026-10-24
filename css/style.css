@@ -1419,4 +1419,30 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
 .anime .d4c-sync .v2:not(.on){display:none}.d4c-sync .v2.on+.v1,.sk-lecteur:not(.anime) .d4c-sync .v1{display:none}
 .sk-onglets{position:relative}.sk-onglets .onglets-indic{display:none!important}
 
+/* Accueil : annonce des produits dans le héros et section « Nos produits » */
+.hero-produits{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.hero-produits .pastille-tag{font-size:12px;gap:8px}
+.hero-produits .pastille-tag svg{width:14px;height:14px;flex:none}
+.hero-produits .pastille-tag:hover{border-color:#2E7247}
+.hero-produits .d4c-tag b{background:#1D5C8C;color:#fff}
+.hero-produits .d4c-tag:hover{border-color:#1D5C8C}
+.sk-produits-section{border-bottom:1px solid var(--line)}
+.sk-pv{gap:16px}
+.sk-pv-tete{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.sk-pv-tag{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;padding:5px 10px;border-radius:99px;background:var(--sk);color:#fff}
+.sk-pv-vis{display:block;border-radius:12px;overflow:hidden;border:1px solid var(--sk-100);box-shadow:var(--ombre-s);transition:transform .3s var(--courbe-douce,ease)}
+.sk-pv-vis:hover{transform:translateY(-3px)}
+.sk-pv-carte{display:block;width:100%;height:auto}
+.sk-pv h3 a{text-decoration:none;color:inherit}
+.sk-pv h3 a:hover{color:var(--sk-texte)}
+.sk-pv .coches{margin:4px 0 6px}
+.sk-pv .coches li::before{background-color:var(--sk-soft)}
+.sk-pv-p.ok{fill:rgba(46,114,71,.32);stroke:#1F6B3F}.sk-pv-p.av{fill:rgba(242,163,58,.4);stroke:#C77700}.sk-pv-p.ri{fill:rgba(200,54,28,.42);stroke:#B0260F}
+.sk-pv-pulse{fill:#C8361C;stroke:#fff;stroke-width:2;transform-box:fill-box;transform-origin:center;animation:skPouls 1.8s ease-in-out infinite}
+@keyframes skPouls{0%,100%{transform:scale(1)}50%{transform:scale(1.35)}}
+.sk-pv-pts circle{fill:#1D5C8C;stroke:#fff;stroke-width:2;transform-box:fill-box;transform-origin:center;animation:skPoint 3.5s ease-in-out infinite}
+.sk-pv-pts circle:nth-child(2){animation-delay:.4s}.sk-pv-pts circle:nth-child(3){animation-delay:.8s}.sk-pv-pts circle:nth-child(4){animation-delay:1.2s}
+.sk-pv-pts circle:nth-child(5){animation-delay:1.6s}.sk-pv-pts circle:nth-child(6){animation-delay:2s}.sk-pv-pts circle:nth-child(7){animation-delay:2.4s}
+@keyframes skPoint{0%,100%{transform:scale(1)}15%{transform:scale(1.4)}30%{transform:scale(1)}}
+
 /* SANKORA:FIN */
