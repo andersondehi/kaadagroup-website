@@ -4,6 +4,68 @@
   /* Compte à rebours RDUE : 30 décembre 2026 */
   var jours = Math.max(0, Math.ceil((Date.UTC(2026, 11, 30) - Date.now()) / 864e5));
   document.querySelectorAll("[data-jours-eudr]").forEach(function (el) { el.textContent = jours; });
+  /* Loupe : toute capture réelle s'ouvre en grand (pages produits) */
+  (function () {
+    var imgs = Array.prototype.slice.call(document.querySelectorAll("img[data-zoom]"));
+    if (!imgs.length || typeof HTMLDialogElement !== "function") return;
+    var en = document.documentElement.lang === "en";
+    var T = en ? { ouvrir: "Enlarge the screenshot", fermer: "Close", plus: "Zoom in", moins: "Zoom out", aide: "Click the image to switch between fit and actual size" }
+               : { ouvrir: "Agrandir la capture", fermer: "Fermer", plus: "Zoomer", moins: "Dézoomer", aide: "Cliquez sur l'image pour passer de la vue d'ensemble à la taille réelle" };
+    var ico = function (d) { return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + d + "</svg>"; };
+    var LOUPE = '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/>';
+    var dlg = document.createElement("dialog");
+    dlg.className = "kc-loupe";
+    dlg.setAttribute("aria-label", T.ouvrir);
+    dlg.innerHTML = '<div class="kc-loupe-barre"><p class="kc-loupe-titre"></p><div class="kc-loupe-outils">' +
+      '<button type="button" data-z="-1" aria-label="' + T.moins + '">' + ico('<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M8 11h6"/>') + "</button>" +
+      '<button type="button" data-z="1" aria-label="' + T.plus + '">' + ico(LOUPE) + "</button>" +
+      '<button type="button" class="kc-loupe-fermer" aria-label="' + T.fermer + '">' + ico('<path d="M6 6l12 12M18 6L6 18"/>') + "</button></div></div>" +
+      '<div class="kc-loupe-zone" tabindex="0"><img alt=""></div><p class="kc-loupe-aide">' + T.aide + "</p>";
+    document.body.appendChild(dlg);
+    var zone = dlg.querySelector(".kc-loupe-zone"), grande = zone.querySelector("img"), titre = dlg.querySelector(".kc-loupe-titre");
+    var niveau = 0; // 0 : vue d'ensemble ; 1, 2, 3 : 100 %, 150 %, 200 % de la taille réelle
+    var appliquer = function () {
+      dlg.classList.toggle("zoome", niveau > 0);
+      grande.style.width = niveau > 0 ? Math.round(grande.naturalWidth * [0, 1, 1.5, 2][niveau] / (window.devicePixelRatio > 1 ? 1.5 : 1)) + "px" : "";
+    };
+    var dernier = null;
+    var ouvrir = function (img) {
+      dernier = document.activeElement;
+      grande.src = img.getAttribute("data-zoom"); grande.alt = img.alt || "";
+      var fig = img.closest("[data-i]"), b = fig && fig.parentElement && fig.parentElement.parentElement.querySelector('.kc-f[data-i="' + fig.getAttribute("data-i") + '"] b');
+      titre.textContent = img.alt ? img.alt.split(" : ")[0] : (b ? b.textContent : "");
+      niveau = 0; appliquer(); dlg.showModal(); zone.scrollTo(0, 0);
+    };
+    dlg.querySelectorAll("[data-z]").forEach(function (b) {
+      b.addEventListener("click", function () { niveau = Math.max(0, Math.min(3, niveau + Number(b.getAttribute("data-z")))); appliquer(); });
+    });
+    grande.addEventListener("click", function (e) {
+      var r = grande.getBoundingClientRect(), fx = (e.clientX - r.left) / r.width, fy = (e.clientY - r.top) / r.height;
+      niveau = niveau ? 0 : 1; appliquer();
+      if (niveau) requestAnimationFrame(function () { zone.scrollTo(fx * grande.offsetWidth - zone.clientWidth / 2, fy * grande.offsetHeight - zone.clientHeight / 2); });
+    });
+    dlg.querySelector(".kc-loupe-fermer").addEventListener("click", function () { dlg.close(); });
+    dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+    dlg.addEventListener("close", function () { grande.removeAttribute("src"); if (dernier && dernier.focus) dernier.focus(); });
+    imgs.forEach(function (img) {
+      var fig = img.closest("figure") || img.parentElement;
+      fig.classList.add("kc-zoomable");
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "kc-zoom"; b.setAttribute("aria-label", T.ouvrir); b.title = T.ouvrir; b.innerHTML = ico(LOUPE);
+      b.addEventListener("click", function () { ouvrir(img); });
+      img.addEventListener("click", function () { ouvrir(img); });
+      fig.appendChild(b);
+    });
+  })();
+  /* Fonctionnalités clés : l'écran suit la fonctionnalité choisie */
+  document.querySelectorAll("[data-kc-fonc]").forEach(function (f) {
+    var items = Array.prototype.slice.call(f.querySelectorAll(".kc-f")), pans = Array.prototype.slice.call(f.querySelectorAll(".kc-p"));
+    var choisir = function (i) {
+      items.forEach(function (x) { var a = x.getAttribute("data-i") === i; x.classList.toggle("actif", a); x.querySelector(".kc-f-btn").setAttribute("aria-expanded", a ? "true" : "false"); });
+      pans.forEach(function (x) { x.classList.toggle("actif", x.getAttribute("data-i") === i); });
+    };
+    items.forEach(function (x) { x.querySelector(".kc-f-btn").addEventListener("click", function () { choisir(x.getAttribute("data-i")); }); });
+  });
   var lecteur = document.querySelector("[data-lecteur]");
   if (!lecteur) return;
   var reduit = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
