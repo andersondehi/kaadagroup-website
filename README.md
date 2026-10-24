@@ -1,34 +1,46 @@
-# Site web Kaada Group (KDG)
+# Site Kaada Group — www.kaadagroup.com
 
-Site statique moderne de 17 pages, sans base de données ni CMS : rapide, sûr et déployable en quelques minutes.
+Site statique multi-pages (HTML, CSS, JavaScript) avec un petit script PHP pour les formulaires.
+Hébergement : Hostinger (le domaine kaadagroup.com y est déjà rattaché).
+
+Les sources du site (générateur Python) sont dans le dépôt privé `kaadagroup-charte`, dossier `generateur-site/`.
+Ce dépôt contient uniquement le site prêt à publier : ne pas modifier les pages ici, elles sont regénérées.
 
 ## Pages
-Accueil · Services (10 expertises) · Agritech (solutions, test EUDR, compte à rebours) · Secteurs · Réalisations (4 études de cas à compléter) · Technologies · Ressources + 3 articles · À propos · Équipe · Carrières · Postuler (candidature avec CV) · Contact (diagnostic gratuit + FAQ) · Mentions légales · 404.
 
-## Mise en ligne (recommandé : Netlify, gratuit)
-1. Créer un compte sur netlify.com, puis glisser-déposer ce dossier dans « Sites ».
-2. Connecter le domaine kaadagroup.com (Domain management). HTTPS est automatique.
-3. Les 4 formulaires fonctionnent sans configuration : `contact` (page Contact), `contact-rapide` (bas de la page d'accueil), `candidature` (avec CV joint) et `newsletter`. Dans « Forms » → « Form notifications », ajouter une notification e-mail vers contact@kaadagroup.com pour `contact` et `contact-rapide`, et une autre vers carrieres@kaadagroup.com pour `candidature`. Vérifier les limites mensuelles du plan gratuit (nombre d'envois et volume de fichiers joints).
+Accueil, Expertises, Technologies, Agritech, **Sankora** (page produit), Secteurs, Réalisations, Équipe, À propos,
+Carrières, Postuler, Contact, Ressources (3 articles), Mentions légales, page 404.
+Adresses courtes possibles : `www.kaadagroup.com/sankora`, `/contact`, `/agritech`…
 
-Autre hébergeur (cPanel, o2switch, LWS…) : envoyer le contenu du dossier dans `public_html`, puis brancher les formulaires sur un service comme Formspree (ajouter `action="https://formspree.io/f/VOTRE_ID"` sur chaque balise `<form>`).
+## Fichiers serveur
 
-## Modifier le site
-Le site est généré par le dossier source `kdg2` (fichiers Python). Pour une modification ponctuelle, éditer directement le fichier `.html` concerné.
-- Couleurs, typographies et animations : `css/style.css` (variables en haut du fichier, mode clair et mode sombre).
-- Menu plein écran, île de navigation et recherche : `navigation.py` (entrées du menu et index de recherche).
-- Coordonnées (téléphone, e-mails, adresse) : présentes dans chaque page ; les remplacer partout avec « Rechercher et remplacer ».
+| Fichier | Rôle |
+|---|---|
+| `.htaccess` | Redirection de kaadagroup.com vers www, adresses courtes, page 404, cache, en-têtes de sécurité |
+| `envoyer.php` | Reçoit les formulaires (contact, contact rapide, candidature avec CV, lettre d'information) et les envoie par e-mail |
+| `_messages/` | Créé automatiquement par `envoyer.php` : copie de chaque message et des CV, fermée au public |
 
-## Photos
-Les photos de `assets/img/photos/` sont des illustrations provisoires à remplacer par vos propres photos, en conservant le même nom de fichier (JPG, 1600 px de large, moins de 300 Ko) :
-Toutes les photos sont des photos réelles libres de droits issues de Pexels (licence Pexels : usage commercial autorisé, attribution non requise) : `terrain-agent.jpg`, `cooperative.jpg`, `aerien.jpg`, `drone.jpg`, `cacao.jpg`, `feves.jpg`, `achats.jpg`, `developpeurs.jpg`, `code.jpg`, `datacenter.jpg`, `reunion.jpg`, `atelier.jpg`, `collaboration.jpg`, `bureau.jpg`, `bureau-dev.jpg`, `equipe-1.jpg` à `equipe-4.jpg`.
-Chaque photo existe en trois largeurs pour accélérer l'affichage sur téléphone : `nom.jpg` (1600 px), `nom-1200.jpg` et `nom-800.jpg`. Quand vous remplacez une photo, remplacez les trois fichiers avec le même nom.
-Remplacer en priorité : le portrait du fondateur (`equipe-1.jpg`) et les portraits de l'équipe.
+## Mise en ligne sur Hostinger (déploiement Git, recommandé)
 
-## À compléter avant la mise en ligne
-- Réalisations : remplacer les éléments entre crochets [X] par les chiffres réels, confirmer les clients et retirer les badges « À compléter » (rechercher `a-completer` dans `realisations.html` et `equipe.html`).
-- Équipe : noms des membres, photos réelles ; valider la citation du fondateur.
-- Témoignages clients (page Réalisations).
-- Téléphone : vérifier `+225 07 48 60 05 075` (il semble compter un chiffre de trop).
-- E-mails utilisés : contact@kaadagroup.com et carrieres@kaadagroup.com (à créer ou à adapter).
-- Mentions légales : forme juridique, RCCM, directeur de la publication, hébergeur.
-- Après la mise en ligne : Google Search Console (envoyer sitemap.xml), Google Business Profile, liens LinkedIn et Facebook.
+1. hPanel › Sites › kaadagroup.com › **Gestionnaire de fichiers** : vider le dossier `public_html`
+   (supprimer la page par défaut d'Hostinger).
+2. hPanel › Sites › kaadagroup.com › **Avancé › Git** : dans « Créer un dépôt », copier la **clé SSH** affichée.
+3. GitHub › dépôt `kaadagroup-website` › Settings › **Deploy keys** › Add deploy key : coller la clé (lecture seule).
+4. Retour dans hPanel › Git : dépôt `git@github.com:andersondehi/kaadagroup-website.git`, branche `main`,
+   répertoire vide (= `public_html`), puis **Créer**, puis **Déployer**.
+5. Activer le **déploiement automatique** (webhook) : chaque envoi sur `main` met le site à jour.
+6. hPanel › **SSL** : vérifier que le certificat est actif et activer « Forcer HTTPS ».
+
+Variante sans Git : télécharger le ZIP du dépôt, l'envoyer dans `public_html` avec le Gestionnaire de fichiers
+et l'extraire (les fichiers doivent être directement dans `public_html`, pas dans un sous-dossier).
+
+## E-mails
+
+Les formulaires envoient à `contact@kaadagroup.com` (candidatures : `carrieres@kaadagroup.com`), depuis
+`site@kaadagroup.com`. Ces adresses doivent exister dans hPanel › **E-mails** (boîtes ou redirections).
+Si un envoi échoue, le message reste enregistré dans `_messages/` et l'échec est noté dans `_messages/erreurs-envoi.log`.
+
+## Après la mise en ligne
+
+- Google Search Console : ajouter `https://www.kaadagroup.com/` et soumettre `sitemap.xml`.
+- Tester chaque formulaire une fois et vérifier la réception des e-mails.
