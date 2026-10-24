@@ -95,3 +95,25 @@
   to = "/en/sankora"
   status = 301
   force = true
+
+# Page Équipe retirée (oct. 2026) : anciennes adresses redirigées vers À propos
+[[redirects]]
+  from = "/equipe"
+  to = "/a-propos"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/equipe.html"
+  to = "/a-propos"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/en/equipe"
+  to = "/en/a-propos"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/en/equipe.html"
+  to = "/en/a-propos"
+  status = 301
+  force = true
