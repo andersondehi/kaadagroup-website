@@ -4,6 +4,15 @@
   /* Compte à rebours RDUE : 30 décembre 2026 */
   var jours = Math.max(0, Math.ceil((Date.UTC(2026, 11, 30) - Date.now()) / 864e5));
   document.querySelectorAll("[data-jours-eudr]").forEach(function (el) { el.textContent = jours; });
+  /* Fonctionnalités clés : l'écran suit la fonctionnalité choisie */
+  document.querySelectorAll("[data-kc-fonc]").forEach(function (f) {
+    var items = Array.prototype.slice.call(f.querySelectorAll(".kc-f")), pans = Array.prototype.slice.call(f.querySelectorAll(".kc-p"));
+    var choisir = function (i) {
+      items.forEach(function (x) { var a = x.getAttribute("data-i") === i; x.classList.toggle("actif", a); x.querySelector(".kc-f-btn").setAttribute("aria-expanded", a ? "true" : "false"); });
+      pans.forEach(function (x) { x.classList.toggle("actif", x.getAttribute("data-i") === i); });
+    };
+    items.forEach(function (x) { x.querySelector(".kc-f-btn").addEventListener("click", function () { choisir(x.getAttribute("data-i")); }); });
+  });
   var lecteur = document.querySelector("[data-lecteur]");
   if (!lecteur) return;
   var reduit = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
