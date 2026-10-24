@@ -1,0 +1,71 @@
+# Prévient Bing et les moteurs IndexNow des pages modifiées, après chaque mise en ligne Netlify.
+name: IndexNow
+
+on:
+  push:
+    branches: [main]
+    paths: ["**.html", "sitemap.xml"]
+  workflow_dispatch:
+    inputs:
+      tout:
+        description: "Soumettre toutes les pages du sitemap"
+        type: boolean
+        default: false
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Attendre la mise en ligne par Netlify
+        run: |
+          attendu=$(sha256sum sitemap.xml | cut -d' ' -f1)
+          for i in $(seq 1 40); do
+            enligne=$(curl -fsS "https://kaadagroup.com/sitemap.xml?nocache=$RANDOM" | sha256sum | cut -d' ' -f1 || true)
+            [ "$enligne" = "$attendu" ] && { echo "Site à jour"; sleep 30; exit 0; }
+            sleep 15
+          done
+          echo "Le sitemap en ligne diffère encore : envoi quand même"
+
+      - name: Envoyer les adresses à IndexNow
+        env:
+          TOUT: ${{ github.event_name == 'workflow_dispatch' && inputs.tout }}
+        run: |
+          python3 - <<'PY'
+          import json, os, re, subprocess, urllib.request
+          SITE = "https://kaadagroup.com"
+          KEY = "5fe4add952fc43c9433859a6355e0817"
+          tout = re.findall(r"<loc>([^<]+)</loc>", open("sitemap.xml", encoding="utf-8").read())
+          if os.environ.get("TOUT") == "true":
+              urls = tout
+          else:
+              try:
+                  fichiers = subprocess.check_output(["git", "diff", "--name-only", "HEAD~1", "HEAD"], text=True).split()
+              except subprocess.CalledProcessError:
+                  fichiers = ["sitemap.xml"]
+              if "sitemap.xml" in fichiers:
+                  urls = tout
+              else:
+                  urls = []
+                  for f in fichiers:
+                      if not f.endswith(".html") or f in ("404.html", "merci.html", "en/merci.html"):
+                          continue
+                      chemin = re.sub(r"(^|/)index\.html$", r"\1", f)
+                      chemin = re.sub(r"\.html$", "", chemin)
+                      url = f"{SITE}/{chemin}"
+                      if url in tout:
+                          urls.append(url)
+          urls = list(dict.fromkeys(urls))[:10000]
+          if not urls:
+              print("Aucune page à signaler")
+              raise SystemExit
+          corps = json.dumps({"host": "kaadagroup.com", "key": KEY, "keyLocation": f"{SITE}/{KEY}.txt", "urlList": urls}).encode()
+          req = urllib.request.Request("https://api.indexnow.org/indexnow", data=corps,
+                                       headers={"Content-Type": "application/json; charset=utf-8"})
+          with urllib.request.urlopen(req, timeout=30) as r:
+              print("IndexNow :", r.status, "-", len(urls), "adresse(s)")
+          print("\n".join(urls))
+          PY
