@@ -68,3 +68,25 @@
   to = "/en/sankora/data4child/fonctionnement"
   status = 301
   force = true
+
+# /sankora reste servie par sankora.html, même à côté du dossier sankora/
+[[redirects]]
+  from = "/sankora"
+  to = "/sankora.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/sankora/"
+  to = "/sankora"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/en/sankora"
+  to = "/en/sankora.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/en/sankora/"
+  to = "/en/sankora"
+  status = 301
+  force = true
