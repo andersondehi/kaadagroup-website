@@ -1,6 +1,9 @@
 /* Sankora · démonstration animée « Sankora en action » */
 (function () {
   "use strict";
+  /* Compte à rebours RDUE : 30 décembre 2026 */
+  var jours = Math.max(0, Math.ceil((Date.UTC(2026, 11, 30) - Date.now()) / 864e5));
+  document.querySelectorAll("[data-jours-eudr]").forEach(function (el) { el.textContent = jours; });
   var lecteur = document.querySelector("[data-lecteur]");
   if (!lecteur) return;
   var reduit = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;

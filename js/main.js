@@ -5,13 +5,74 @@
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* ---------- Textes générés par le script, selon la langue de la page (ADR-020) ----------
+     Clé absente ou vide en anglais : le texte français s'affiche. */
+  var LANGUE = /^en/i.test(document.documentElement.lang) ? "en" : "fr";
+  var TEXTES = {
+    fr: {
+      nombres: "fr-FR",
+      resultat1: " résultat.", resultatN: " résultats.", parcourir: " Flèches haut et bas pour parcourir.", aucunResultat: "Aucun résultat.",
+      jour: "jour", jours: "jours",
+      eudrDepuisTitre: "EUDR", eudrDepuis: " applicable depuis le 30\u00A0décembre\u00A02026 aux grands et moyens opérateurs",
+      eudrDemainTitre: "L'EUDR", eudrDemain: " s'applique demain aux grands et moyens opérateurs",
+      eudrAvantTitre: "J-{j}", eudrAvant: " avant l'application de l'EUDR aux grands et moyens opérateurs",
+      eudrNoteApres: "L'EUDR s'applique depuis le 30\u00A0décembre\u00A02026 aux grands et moyens opérateurs et négociants. Micro et petits opérateurs\u00A0: 30\u00A0juin\u00A02027 (déjà applicable à ceux soumis au règlement bois de l'UE).",
+      reco1: "Cartographier toutes les parcelles : un point GPS pour les parcelles de 4 ha ou moins, un polygone au-delà.",
+      reco2: "Relier chaque lot à ses producteurs et parcelles grâce à une traçabilité numérique.",
+      reco3: "Croiser vos parcelles avec l'imagerie satellite et les cartes de couvert forestier.",
+      reco4: "Centraliser les données producteurs dans un outil unique, conçu pour votre organisation, à jour et sécurisé.",
+      reco5: "Constituer un dossier de diligence raisonnée exploitable par vos acheteurs.",
+      recoDefaut: "Mettre en place un contrôle qualité continu et des rapports automatisés.",
+      niveauEleve: "Risque élevé", texteEleve: "Vos lots risquent d'être refusés par vos acheteurs européens. Un programme de mise en conformité est urgent.",
+      niveauMoyen: "En bonne voie", texteMoyen: "Les bases sont là, mais des maillons restent fragiles. Concentrez-vous sur les points ci-dessous.",
+      niveauBon: "Bien préparé", texteBon: "Votre organisation est bien avancée. Sécurisez la qualité des données et l'automatisation des rapports.",
+      annonce: " : {score} sur 100, {niveau}.",
+      profil: " profil", profils: " profils",
+      cartePause: "Mettre en pause l'animation de la carte", carteReprendre: "Reprendre l'animation de la carte"
+    },
+    en: {
+      nombres: "en-GB",
+      resultat1: " result.", resultatN: " results.", parcourir: " Use the up and down arrow keys to browse.", aucunResultat: "No results.",
+      jour: "day", jours: "days",
+      eudrDepuisTitre: "EUDR", eudrDepuis: " applicable since 30\u00A0December\u00A02026 to large and medium-sized operators",
+      eudrDemainTitre: "The EUDR", eudrDemain: " applies tomorrow to large and medium-sized operators",
+      eudrAvantTitre: "{j} days", eudrAvant: " until the EUDR applies to large and medium-sized operators",
+      eudrNoteApres: "The EUDR has applied to large and medium-sized operators and traders since 30\u00A0December\u00A02026. Micro and small operators: 30\u00A0June\u00A02027 (already applicable to those covered by the EU Timber Regulation).",
+      reco1: "Map every plot: a GPS point for plots of 4 ha or less, a polygon above that.",
+      reco2: "Link each lot to its producers and plots through digital traceability.",
+      reco3: "Cross-check your plots against satellite imagery and forest cover maps.",
+      reco4: "Centralise producer data in a single tool, designed for your organisation, kept up to date and secure.",
+      reco5: "Build a due diligence file your buyers can use.",
+      recoDefaut: "Put continuous quality control and automated reporting in place.",
+      niveauEleve: "High risk", texteEleve: "Your lots may be rejected by your European buyers. A compliance programme is urgent.",
+      niveauMoyen: "On track", texteMoyen: "The foundations are in place, but some links in the chain are still weak. Focus on the points below.",
+      niveauBon: "Well prepared", texteBon: "Your organisation is well advanced. Secure your data quality and automate your reporting.",
+      annonce: ": {score} out of 100, {niveau}.",
+      profil: " profile", profils: " profiles",
+      cartePause: "Pause the map animation", carteReprendre: "Resume the map animation"
+    }
+  };
+  function t(cle) { var v = TEXTES[LANGUE][cle]; return v ? v : TEXTES.fr[cle]; }
+  // Signale que le script tourne : le secours CSS du tracé des illustrations (3 s) ne s'applique plus
+  document.documentElement.classList.add("anim-pret");
+
+  /* ---------- Images introuvables retirées (ADR-011, remplace onerror en ligne) ---------- */
+  document.addEventListener("error", function (e) {
+    if (e.target && e.target.tagName === "IMG") e.target.remove();
+  }, true);
+  $$("img").forEach(function (i) { if (i.complete && !i.naturalWidth) i.remove(); });
+
   /* ---------- En-tête, île flottante, barre mobile ---------- */
   var entete = $("#entete"), barre = $(".barre-mobile"), haut = $(".haut"), ile = $(".ile");
   function surDefilement() {
     var y = window.scrollY;
     if (entete) entete.classList.toggle("defile", y > 8);
     if (haut) haut.classList.toggle("visible", y > 900);
-    if (ile) ile.classList.toggle("visible", y > 360 && !document.body.classList.contains("menu-ouvert"));
+    if (ile) {
+      var ileVisible = y > 360 && !document.body.classList.contains("menu-ouvert");
+      ile.classList.toggle("visible", ileVisible);
+      ile.inert = !ileVisible; // liens invisibles hors de la tabulation (QA-06)
+    }
   }
   window.addEventListener("scroll", surDefilement, { passive: true });
   surDefilement();
@@ -69,6 +130,7 @@
       $$("[data-ouvrir-menu]").forEach(function (b) { b.setAttribute("aria-expanded", "false"); });
       horsMenu.forEach(function (el) { el.removeAttribute("inert"); });
       document.body.classList.remove("menu-ouvert");
+      annoncer(""); champ.setAttribute("aria-expanded", "false"); champ.removeAttribute("aria-activedescendant");
       setTimeout(function () { mg.hidden = true; champ.value = ""; filtrer(""); }, reduit ? 0 : 650);
       if (declencheur) declencheur.focus();
       surDefilement();
@@ -84,7 +146,14 @@
       var i = sansAccent(txt).indexOf(q); if (i < 0 || !q) return echapper(txt);
       return echapper(txt.slice(0, i)) + "<mark>" + echapper(txt.slice(i, i + q.length)) + "</mark>" + echapper(txt.slice(i + q.length));
     };
-    var choix = -1;
+    var choix = -1, vide = $("#pm-vide", mg), statut = $("#pm-statut", mg), minuteStatut = null;
+    /* Nombre de résultats annoncé 500 ms après la dernière frappe, pas à chaque lettre */
+    var annoncer = function (t) {
+      clearTimeout(minuteStatut);
+      if (!statut) return;
+      if (!t) { statut.textContent = ""; return; }
+      minuteStatut = setTimeout(function () { statut.textContent = t; }, 500);
+    };
     var selectionner = function (k) {
       var items = $$("a", resultats); if (!items.length) return;
       choix = (k + items.length) % items.length;
@@ -95,15 +164,19 @@
     function filtrer(v) {
       var q = sansAccent(v.trim());
       mg.classList.toggle("recherche", !!q);
-      champ.setAttribute("aria-expanded", !!q);
-      resultats.hidden = !q; choix = -1; champ.removeAttribute("aria-activedescendant");
-      if (!q) { resultats.innerHTML = ""; return; }
+      choix = -1; champ.removeAttribute("aria-activedescendant");
+      if (!q) { resultats.innerHTML = ""; resultats.hidden = true; if (vide) vide.hidden = true; champ.setAttribute("aria-expanded", "false"); annoncer(""); return; }
       var mots = q.split(/\s+/);
-      var trouves = index.filter(function (e) { var s = sansAccent(e.t + " " + e.s + " " + e.h); return mots.every(function (m) { return s.indexOf(m) > -1; }); }).slice(0, 8);
-      resultats.innerHTML = trouves.length ? trouves.map(function (e, i) {
-        return '<li><a id="pm-r' + i + '" role="option" href="' + echapper(e.h) + '"><b>' + surligner(e.t, mots[0]) + "</b><small>" + echapper(e.s) + "</small></a></li>";
-      }).join("") : '<li class="pm-vide">Aucun résultat. Essayez « mobile », « EUDR » ou « Odoo », ou <a class="lien" href="contact.html">posez-nous la question</a>.</li>';
+      var trouves = index.filter(function (e) { var s = sansAccent(e.t + " " + e.s + " " + e.h + " " + (e.k || "")); return mots.every(function (m) { return s.indexOf(m) > -1; }); }).slice(0, 8);
+      // Le message « Aucun résultat » est hors de la liste : il contient un lien, interdit parmi les options
+      resultats.innerHTML = trouves.map(function (e, i) {
+        return '<li role="none"><a id="pm-r' + i + '" role="option" aria-selected="false" href="' + echapper(e.h) + '"><b>' + surligner(e.t, mots[0]) + "</b><small>" + echapper(e.s) + "</small></a></li>";
+      }).join("");
+      resultats.hidden = !trouves.length;
+      if (vide) vide.hidden = !!trouves.length;
+      champ.setAttribute("aria-expanded", trouves.length ? "true" : "false");
       if (trouves.length) selectionner(0);
+      annoncer(trouves.length ? trouves.length + (trouves.length === 1 ? t("resultat1") : t("resultatN")) + t("parcourir") : t("aucunResultat"));
     }
     champ.addEventListener("input", function () { filtrer(champ.value); });
     champ.addEventListener("keydown", function (e) {
@@ -112,13 +185,37 @@
       else if (e.key === "Enter") { var a = $$("a[role=option]", resultats)[choix]; if (a) { e.preventDefault(); a.click(); } }
     });
 
-    /* Clavier : ⌘K / Ctrl+K ou « / » pour ouvrir, Échap pour fermer, focus maintenu dans le menu */
+    /* Tabulation : chaque entrée de la liste, puis les liens de SON aperçu, puis l'entrée suivante (QA-LM-01).
+       Sans colonne d'aperçus (petits écrans), l'ordre du document s'applique. */
+    var droite = $(".mg-droite", mg);
+    var liensApercu = function (i) { var p = document.getElementById(liensListe[i].getAttribute("data-apercu")); return p ? $$("a[href]", p) : []; };
+    function tabulerApercus(e) {
+      if (!droite || droite.offsetParent === null || mg.classList.contains("recherche")) return false;
+      var ordre = [];
+      liensListe.forEach(function (a, i) { ordre.push([a, i]); liensApercu(i).forEach(function (x) { ordre.push([x, i]); }); });
+      var actif = document.activeElement, k = -1;
+      ordre.forEach(function (o, n) { if (o[0] === actif) k = n; });
+      var cible = null;
+      if (k > -1) cible = ordre[k + (e.shiftKey ? -1 : 1)];
+      else if (e.shiftKey) {
+        // Retour depuis l'élément qui suit les aperçus (coordonnées) : dernier lien de l'aperçu Contact
+        var focusables = $$("a[href], button, input", mg).filter(function (x) { return x.offsetParent !== null; });
+        var prec = focusables[focusables.indexOf(actif) - 1];
+        if (prec && (droite.contains(prec) || liensListe.indexOf(prec) > -1)) cible = ordre[ordre.length - 1];
+      }
+      if (!cible) return false; // avant la liste ou après le dernier aperçu : ordre du document et piège de focus
+      e.preventDefault();
+      montrerApercu(liensListe[cible[1]]);
+      cible[0].focus();
+      return true;
+    }
+
+    /* Clavier : ⌘K / Ctrl+K pour ouvrir, Échap pour fermer, focus maintenu dans le menu (raccourci « / » retiré, ADR-013) */
     document.addEventListener("keydown", function (e) {
-      var saisie = /input|textarea|select/i.test((e.target.tagName || "")) || e.target.isContentEditable;
       if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) { e.preventDefault(); if (mg.hidden) ouvrir(null, true); else champ.focus(); return; }
-      if (e.key === "/" && !saisie && mg.hidden) { e.preventDefault(); ouvrir(null, true); return; }
       if (mg.hidden) return;
       if (e.key === "Escape") { if (champ.value) { champ.value = ""; filtrer(""); champ.focus(); } else fermer(); return; }
+      if (e.key === "Tab" && tabulerApercus(e)) return;
       if (e.key === "Tab") {
         var focusables = $$("a[href], button, input", mg).filter(function (x) { return x.offsetParent !== null; });
         var premier = focusables[0], dernier = focusables[focusables.length - 1];
@@ -133,7 +230,7 @@
   $$("[data-annee]").forEach(function (el) { el.textContent = new Date().getFullYear(); });
 
   /* ---------- Apparition et compteurs ---------- */
-  function formater(n) { return Math.round(n).toLocaleString("fr-FR").replace(/ | /g, " "); }
+  function formater(n) { return Math.round(n).toLocaleString(t("nombres")).replace(/ | /g, " "); }
   function compter(el) {
     var cible = parseFloat(el.getAttribute("data-compteur"));
     if (reduit || isNaN(cible)) { el.textContent = formater(cible); return; }
@@ -158,7 +255,8 @@
     }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
     elements.forEach(function (el) { io.observe(el); });
     compteurs.forEach(function (el) { io.observe(el); });
-    setTimeout(function () { elements.forEach(function (el) { el.classList.add("vu"); }); }, 2600);
+    // Filet de sécurité pour les blocs de texte ; les illustrations tracées attendent d'être à l'écran
+    setTimeout(function () { elements.forEach(function (el) { if (!el.classList.contains("illus-anim")) el.classList.add("vu"); }); }, 2600);
   } else {
     elements.forEach(function (el) { el.classList.add("vu"); });
   }
@@ -190,7 +288,30 @@
         if (p) p.hidden = !actif;
       });
       if (focus) o.focus();
+      placer(o);
     }
+    // Indicateur qui glisse d'un onglet à l'autre (seul transform est animé)
+    var indic = document.createElement("span"); indic.className = "onglets-indic"; indic.setAttribute("aria-hidden", "true"); liste.prepend(indic);
+    function placer(o) { indic.style.width = o.offsetWidth + "px"; indic.style.height = o.offsetHeight + "px"; indic.style.transform = "translate(" + o.offsetLeft + "px," + o.offsetTop + "px)"; }
+    activer(onglets.filter(function (x) { return x.getAttribute("aria-selected") === "true"; })[0] || onglets[0]);
+    requestAnimationFrame(function () { liste.classList.add("indic-pret"); });
+    // Les polices chargées après coup recomposent les libellés : on recale l'indicateur (QA-AN-02)
+    var recaler = function () { placer(onglets.filter(function (x) { return x.getAttribute("aria-selected") === "true"; })[0]); };
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(recaler);
+    window.addEventListener("load", recaler);
+    window.addEventListener("resize", function () { placer(onglets.filter(function (x) { return x.getAttribute("aria-selected") === "true"; })[0]); });
+    // Lien profond vers un panneau (ex. agritech.html#p-coop) : l'onglet correspondant s'ouvre, sans voler le focus
+    function suivreAncre() {
+      var id = location.hash.slice(1), o = id && onglets.filter(function (x) { return x.getAttribute("aria-controls") === id; })[0];
+      if (!o) return;
+      activer(o);
+      var panneau = document.getElementById(id), defiler = function () { panneau.scrollIntoView({ block: "start" }); };
+      defiler();
+      // Les images chargées au-dessus décalent le panneau : on le recale une fois la page chargée
+      if (document.readyState !== "complete") window.addEventListener("load", defiler, { once: true });
+    }
+    suivreAncre();
+    window.addEventListener("hashchange", suivreAncre);
     onglets.forEach(function (o, i) {
       o.addEventListener("click", function () {
         activer(o);
@@ -207,31 +328,43 @@
 
   /* ---------- Compte à rebours EUDR (30 décembre 2026) ---------- */
   var echeance = new Date("2026-12-30T00:00:00Z").getTime();
+  var minuterie = null;
   function majCompte() {
     var reste = echeance - Date.now();
-    var j = Math.max(0, Math.floor(reste / 864e5)), h = Math.max(0, Math.floor(reste / 36e5) % 24), m = Math.max(0, Math.floor(reste / 6e4) % 60);
-    $$("[data-cd='j']").forEach(function (el) { el.textContent = j; });
-    $$("[data-cd='h']").forEach(function (el) { el.textContent = String(h).padStart(2, "0"); });
-    $$("[data-cd='m']").forEach(function (el) { el.textContent = String(m).padStart(2, "0"); });
-    $$("[data-jours-eudr]").forEach(function (el) { el.textContent = reste > 0 ? j : "0"; });
-    if (reste <= 0) $$("[data-cd-note]").forEach(function (el) { el.textContent = "L'EUDR s'applique depuis le 30 décembre 2026 aux grands et moyens opérateurs."; });
+    // Le compteur est masqué dans le HTML (pas de chiffre sans script) et après l'échéance
+    $$(".compte").forEach(function (el) { el.hidden = reste <= 0; });
+    // Jours calendaires restants (arrondi supérieur), même nombre pour le compteur et le menu : J-1 = veille de l'échéance
+    var jours = Math.max(0, Math.ceil(reste / 864e5));
+    $$("[data-cd='j']").forEach(function (el) {
+      el.textContent = jours;
+      if (el.nextElementSibling) el.nextElementSibling.textContent = jours === 1 ? t("jour") : t("jours");
+    });
+    $$("[data-eudr-menu]").forEach(function (el) {
+      var b = document.createElement("b"), suite, jm = jours;
+      if (reste <= 0) { b.textContent = t("eudrDepuisTitre"); suite = t("eudrDepuis"); }
+      else if (jm === 1) { b.textContent = t("eudrDemainTitre"); suite = t("eudrDemain"); }
+      else { b.textContent = t("eudrAvantTitre").replace("{j}", jm); suite = t("eudrAvant"); }
+      el.textContent = "";
+      el.append(b, suite);
+    });
+    if (reste <= 0) {
+      $$("[data-cd-note]").forEach(function (el) { el.textContent = t("eudrNoteApres"); });
+      if (minuterie) { clearInterval(minuterie); minuterie = null; }
+    }
   }
-  if ($("[data-cd]") || $("[data-jours-eudr]")) { majCompte(); setInterval(majCompte, 30000); }
+  if ($("[data-cd]") || $("[data-eudr-menu]")) { minuterie = setInterval(majCompte, 60000); majCompte(); }
 
   /* ---------- Test de préparation EUDR ---------- */
   var quiz = $("#quiz");
   if (quiz) {
+    var repli = $("[data-quiz-repli]", quiz), interactif = $("[data-quiz-interactif]", quiz);
+    if (interactif) interactif.hidden = false;
+    if (repli) repli.hidden = true;
     var questions = $$(".question", quiz), barreQ = $("#quiz-barre"), res = $("#quiz-resultat"), scores = [], courant = 0;
-    var recos = [
-      "Cartographier toutes les parcelles : point GPS sous 4 ha, polygone au-delà.",
-      "Relier chaque lot à ses producteurs et parcelles grâce à une traçabilité numérique.",
-      "Croiser vos parcelles avec l'imagerie satellite et les cartes de couvert forestier.",
-      "Centraliser les données producteurs dans une plateforme unique, à jour et sécurisée.",
-      "Constituer un dossier de diligence raisonnée exploitable par vos acheteurs."
-    ];
+    var recos = [t("reco1"), t("reco2"), t("reco3"), t("reco4"), t("reco5")];
     function montrer(i) {
       questions.forEach(function (q, k) { q.classList.toggle("active", k === i); });
-      if (barreQ) barreQ.style.width = (i / questions.length * 100) + "%";
+      if (barreQ) barreQ.style.transform = "scaleX(" + (i / questions.length) + ")";
     }
     questions.forEach(function (q, i) {
       $$("button", q).forEach(function (b) {
@@ -245,135 +378,24 @@
     });
     function terminer() {
       questions.forEach(function (q) { q.classList.remove("active"); });
-      if (barreQ) barreQ.style.width = "100%";
+      if (barreQ) barreQ.style.transform = "none";
       var total = Math.round(scores.reduce(function (a, b) { return a + b; }, 0) / (questions.length * 2) * 100);
       $("#quiz-score").textContent = total;
       var niv = $("#quiz-niveau"), txt = $("#quiz-texte"), ul = $("#quiz-reco");
-      if (total <= 40) { niv.textContent = "Risque élevé"; niv.style.cssText = "background:#FDECEA;color:#B8361E"; txt.textContent = "Vos lots risquent d'être refusés par vos acheteurs européens. Un programme de mise en conformité est urgent."; }
-      else if (total <= 75) { niv.textContent = "En bonne voie"; niv.style.cssText = "background:#FFF3EA;color:#8F3B04"; txt.textContent = "Les bases sont là, mais des maillons restent fragiles. Concentrez-vous sur les points ci-dessous."; }
-      else { niv.textContent = "Bien préparé"; niv.style.cssText = "background:#E8F5EC;color:#1E5F3A"; txt.textContent = "Votre organisation est bien avancée. Sécurisez la qualité des données et l'automatisation des rapports."; }
+      if (total <= 40) { niv.textContent = t("niveauEleve"); niv.style.cssText = "background:#FDECEA;color:#B8361E"; txt.textContent = t("texteEleve"); }
+      else if (total <= 75) { niv.textContent = t("niveauMoyen"); niv.style.cssText = "background:#FFF3EA;color:#8F3B04"; txt.textContent = t("texteMoyen"); }
+      else { niv.textContent = t("niveauBon"); niv.style.cssText = "background:#E8F5EC;color:#1E5F3A"; txt.textContent = t("texteBon"); }
       ul.innerHTML = "";
       scores.forEach(function (s, i) { if (s < 2) { var li = document.createElement("li"); li.textContent = recos[i]; ul.appendChild(li); } });
-      if (!ul.children.length) { var li = document.createElement("li"); li.textContent = "Mettre en place un contrôle qualité continu et des rapports automatisés."; ul.appendChild(li); }
-      try { sessionStorage.setItem("kdg-score-eudr", total); } catch (e) {}
+      if (!ul.children.length) { var li = document.createElement("li"); li.textContent = t("recoDefaut"); ul.appendChild(li); }
       res.classList.add("active");
+      $("#quiz-annonce").textContent = t("annonce").replace("{score}", total).replace("{niveau}", niv.textContent.toLowerCase());
+      $("#quiz-titre-resultat").focus();
     }
     var refaire = $("#quiz-refaire");
-    if (refaire) refaire.addEventListener("click", function () { scores = []; courant = 0; res.classList.remove("active"); montrer(0); $("button", questions[0]).focus(); });
+    if (refaire) refaire.addEventListener("click", function () { scores = []; courant = 0; res.classList.remove("active"); $("#quiz-annonce").textContent = ""; montrer(0); $("button", questions[0]).focus(); });
     montrer(0);
   }
-
-  /* ---------- Préremplissage du formulaire de contact ---------- */
-  try {
-    var params = new URLSearchParams(location.search), sujet = params.get("besoin");
-    if (sujet) { var c = document.querySelector("input[name='besoins'][value='" + sujet + "']"); if (c) c.checked = true; }
-    var poste = params.get("poste"), sel = $("#c-poste");
-    if (poste && sel) { $$("option", sel).forEach(function (o) { if (o.value === poste) sel.value = poste; }); }
-  } catch (e) {}
-
-  /* ---------- Dépôt de fichier ---------- */
-  $$(".fichier").forEach(function (z) {
-    var input = $("input[type='file']", z), nom = $(".nom", z);
-    ["dragenter", "dragover"].forEach(function (t) { z.addEventListener(t, function () { z.classList.add("survol"); }); });
-    ["dragleave", "drop"].forEach(function (t) { z.addEventListener(t, function () { z.classList.remove("survol"); }); });
-    input.addEventListener("change", function () {
-      var f = input.files && input.files[0];
-      if (!f) { nom.textContent = ""; return; }
-      if (f.size > 8 * 1024 * 1024) { nom.textContent = "Fichier trop lourd (8 Mo maximum). Choisissez une version compressée."; input.value = ""; return; }
-      nom.textContent = f.name;
-    });
-  });
-
-  /* ---------- Validation des champs en direct ---------- */
-  var RE_MAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  function messageChamp(ch) {
-    if (ch.type === "checkbox") return ch.checked ? "" : "Merci de cocher cette case pour continuer.";
-    if (ch.type === "file") return (ch.files && ch.files.length) ? "" : "Merci de joindre votre CV.";
-    var v = ch.value.trim();
-    if (ch.required && !v) return "Ce champ est obligatoire.";
-    if (ch.type === "email" && v && !RE_MAIL.test(v)) return "Cette adresse e-mail semble incomplète (exemple : nom@organisation.com).";
-    if (ch.type === "url" && v && !/^https?:\/\/\S+\.\S+/.test(v)) return "Indiquez une adresse complète, commençant par https://";
-    return "";
-  }
-  function marquer(ch, afficher) {
-    var txt = messageChamp(ch), id = ch.id ? ch.id + "-msg" : null;
-    var hote = ch.type === "checkbox" ? ch.closest("label") : (ch.closest(".fichier") || ch);
-    var m = id && document.getElementById(id);
-    if (txt && afficher) {
-      if (!m && id) { m = document.createElement("span"); m.className = "champ-msg"; m.id = id; hote.insertAdjacentElement("afterend", m); }
-      if (m) m.textContent = txt;
-      ch.setAttribute("aria-invalid", "true");
-      if (id) ch.setAttribute("aria-describedby", id);
-    } else {
-      if (m) m.remove();
-      ch.removeAttribute("aria-invalid");
-      ch.removeAttribute("aria-describedby");
-      ch.classList.toggle("valide", !txt && ch.type !== "checkbox" && ch.type !== "file" && !!ch.value.trim() && (ch.required || ch.type === "email"));
-    }
-    return !txt;
-  }
-  $$("form[data-envoi]").forEach(function (form) {
-    if (form.classList.contains("lettre")) return;
-    $$("input, select, textarea", form).forEach(function (ch) {
-      if (ch.type === "hidden" || ch.name === "site-web") return;
-      ch.addEventListener("blur", function () { if (ch.value || ch.hasAttribute("aria-invalid")) marquer(ch, true); });
-      ch.addEventListener("input", function () { if (ch.hasAttribute("aria-invalid")) marquer(ch, true); });
-      ch.addEventListener("change", function () { if (ch.hasAttribute("aria-invalid") || ch.type === "checkbox" || ch.type === "file") marquer(ch, ch.hasAttribute("aria-invalid")); });
-    });
-  });
-
-  /* ---------- Envoi des formulaires (Netlify Forms, repli par e-mail) ---------- */
-  var COCHE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
-  $$("form[data-envoi]").forEach(function (form) {
-    var lettre = form.classList.contains("lettre");
-    var msg = lettre ? $(".lettre-msg", form.parentNode) : $(".message", form);
-    var courriel = form.getAttribute("data-email");
-    function afficher(t, ok) { if (!msg) return; msg.textContent = t; msg.className = (lettre ? "lettre-msg" : "message") + (ok ? " ok" : ""); msg.hidden = false; }
-    function remercier() {
-      var bloc = document.createElement("div");
-      bloc.className = "merci"; bloc.setAttribute("role", "status"); bloc.tabIndex = -1;
-      bloc.innerHTML = '<div class="rond">' + COCHE + '</div><h3>Message bien reçu</h3><p></p><button type="button" class="btn btn-s btn-sm">Envoyer une autre demande</button>';
-      $("p", bloc).textContent = form.getAttribute("data-ok") || "Merci, votre message a bien été envoyé. Nous vous répondons sous 24 heures ouvrées.";
-      Array.prototype.forEach.call(form.children, function (c) { c.setAttribute("data-masque", ""); c.hidden = true; });
-      form.appendChild(bloc); bloc.focus();
-      $("button", bloc).addEventListener("click", function () {
-        bloc.remove();
-        $$("[data-masque]", form).forEach(function (c) { c.hidden = c.classList.contains("message"); c.removeAttribute("data-masque"); });
-        var premier = $("input:not([type=hidden]):not([name=site-web]), select, textarea", form); if (premier) premier.focus();
-      });
-    }
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var invalides = [];
-      $$("[required]", form).forEach(function (ch) {
-        if (lettre) {
-          var bon = ch.value.trim() && RE_MAIL.test(ch.value.trim());
-          ch.classList.toggle("erreur", !bon); if (!bon) invalides.push(ch);
-        } else if (!marquer(ch, true)) invalides.push(ch);
-      });
-      $$("input[type=url]", form).forEach(function (ch) { if (!marquer(ch, true)) invalides.push(ch); });
-      if (invalides.length) {
-        if (lettre) afficher("Indiquez une adresse e-mail valide.");
-        else afficher(invalides.length === 1 ? "Un champ est à corriger avant l'envoi." : invalides.length + " champs sont à corriger avant l'envoi.");
-        invalides[0].focus();
-        return;
-      }
-      if (msg) msg.hidden = true;
-      var bouton = $("button[type='submit']", form), libelle = bouton ? bouton.innerHTML : "";
-      if (bouton) { bouton.disabled = true; bouton.textContent = "Envoi en cours…"; }
-      var donnees = new FormData(form), aFichier = !!$("input[type='file']", form);
-      var options = aFichier ? { method: "POST", body: donnees } : { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams(donnees).toString() };
-      fetch(form.getAttribute("action") || "/", options).then(function (r) {
-        if (!r.ok) throw new Error(r.status);
-        form.reset();
-        $$(".fichier .nom", form).forEach(function (n) { n.textContent = ""; });
-        $$(".valide", form).forEach(function (c) { c.classList.remove("valide"); });
-        if (lettre) afficher(form.getAttribute("data-ok") || "Merci, votre inscription est confirmée.", true); else remercier();
-      }).catch(function () {
-        afficher("L'envoi n'a pas abouti depuis cette page. Écrivez-nous directement à " + courriel + " : nous vous répondons sous 24 heures ouvrées.");
-      }).then(function () { if (bouton) { bouton.disabled = false; bouton.innerHTML = libelle; } });
-    });
-  });
 
   /* ---------- Filtre des profils (carrières) ---------- */
   var filtres = $(".filtres");
@@ -384,7 +406,8 @@
         var f = b.getAttribute("data-filtre"), n = 0;
         boutonsF.forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
         postesF.forEach(function (p) { var ok = !f || p.getAttribute("data-famille") === f; p.hidden = !ok; if (ok) { n++; p.classList.add("vu"); } });
-        if (compteP) compteP.textContent = n + (n > 1 ? " profils" : " profil");
+        if (compteP) // Pluriel : « 0 profil » en français, « 0 profiles » en anglais
+        compteP.textContent = n + ((LANGUE === "en" ? n !== 1 : n > 1) ? t("profils") : t("profil"));
       });
     });
   }
@@ -421,11 +444,20 @@
     var ctx = cv.getContext("2d");
     var P = [[-17,21],[-16.5,16],[-17.3,14.7],[-15,11],[-13,9],[-11,6.8],[-8,4.5],[-3,5],[2,6.2],[6,4.3],[9,4],[9.6,1],[11,-3],[12.2,-6],[13.5,-11],[12,-17],[14.5,-23],[15.5,-28],[18,-34.5],[20,-35],[26,-34],[31,-29.5],[33,-26],[35.5,-22],[35,-18],[40.5,-11],[39.3,-6],[40.2,-2.5],[42,-1],[46,2],[51,11.5],[43.5,11.8],[41,14],[39,16],[37.3,19],[36,22],[34.5,27],[32.5,30],[29,31],[25,31.8],[20,31],[20,32.5],[15,32.5],[11,33.5],[10.5,37],[3,36.8],[-2,35],[-6,35.8],[-9.5,32],[-10,29],[-13,27.5],[-15,24],[-17,21]];
     var MAD = [[44,-25],[47,-25],[50.5,-15],[49,-12],[44,-16.5]];
-    var hubs = [["Abidjan",-4.0,5.35,1],["Dakar",-17.3,14.7],["Accra",-0.2,5.6],["Lagos",3.4,6.5],["Douala",9.7,4.05],["Kinshasa",15.3,-4.3],["Nairobi",36.8,-1.3],["Addis-Abeba",38.7,9.0],["Johannesburg",28,-26.2],["Bamako",-8,12.6],["Ouagadougou",-1.5,12.4],["Le Caire",31.2,30],["Casablanca",-7.6,33.6],["Luanda",13.2,-8.8],["Dar es Salam",39.3,-6.8]];
-    var liens = [[0,2],[0,3],[0,9],[0,10],[0,1],[0,4],[3,4],[4,5],[5,13],[5,6],[6,7],[6,14],[13,8],[14,8],[9,1],[9,12],[12,11],[11,7],[10,3]];
+    /* Grandes villes et capitales réelles (longitude, latitude) ; aucune n'est nommée à l'écran, sauf Abidjan */
+    var hubs = [["Abidjan",-4.03,5.36,1],["Dakar",-17.44,14.69],["Conakry",-13.71,9.64],["Monrovia",-10.8,6.3],["Bamako",-8.0,12.64],["Ouagadougou",-1.52,12.37],["Niamey",2.11,13.51],
+      ["Accra",-0.19,5.6],["Lagos",3.38,6.52],["Abuja",7.49,9.06],["N'Djamena",15.04,12.13],["Douala",9.7,4.05],["Yaoundé",11.5,3.85],["Libreville",9.45,0.39],
+      ["Kinshasa",15.31,-4.32],["Luanda",13.23,-8.84],["Khartoum",32.56,15.5],["Addis-Abeba",38.74,9.03],["Kampala",32.58,0.35],["Nairobi",36.82,-1.29],["Kigali",30.06,-1.95],
+      ["Dar es Salam",39.28,-6.79],["Lusaka",28.32,-15.39],["Harare",31.05,-17.83],["Maputo",32.57,-25.97],["Johannesburg",28.05,-26.2],["Le Cap",18.42,-33.92],
+      ["Antananarivo",47.52,-18.88],["Le Caire",31.24,30.04],["Tunis",10.18,36.81],["Alger",3.06,36.75],["Casablanca",-7.59,33.57]];
+    /* Arcs orange qui partent d'Abidjan (charte ch. 05), avec un point qui circule */
+    var liens = [[0,1],[0,4],[0,5],[0,7],[0,8],[0,9],[0,11],[0,14],[0,17],[0,19],[0,25],[0,28],[0,31],[0,3]];
+    /* Liens secondaires entre villes : plus discrets, sans point mobile */
+    var liensSec = [[1,2],[2,3],[4,6],[6,10],[8,9],[9,10],[11,12],[12,13],[14,15],[14,20],[20,18],[18,19],[19,21],[17,16],[16,28],[28,29],[29,30],[30,31],[22,23],[23,24],[24,25],[25,26],[21,22],[15,22],[21,27]];
     var dedans = function (x, y, poly) { var c = false; for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) { var xi = poly[i][0], yi = poly[i][1], xj = poly[j][0], yj = poly[j][1]; if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) c = !c; } return c; };
     var css = function (n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); };
     var W, H, points = [], t0 = performance.now(), visible = true, boucle = null, fond = document.createElement("canvas"), encreFond = "", dernier = 0;
+    var enPause = false, boutonPause = $("[data-carte-pause]");
     var proj = function (lon, lat) { var pad = W * .04, s = Math.min((W - 2 * pad) / 72, (H - 2 * pad) / 74), ox = (W - 72 * s) / 2, oy = (H - 74 * s) / 2; return [ox + (lon + 19) * s, oy + (38 - lat) * s]; };
     var construire = function () {
       var r = cv.getBoundingClientRect(), d = window.devicePixelRatio || 1; W = r.width; H = r.height;
@@ -444,30 +476,50 @@
     };
     var dessiner = function (now) {
       /* 30 images par seconde suffisent pour ces mouvements lents et ménagent la batterie des téléphones */
-      if (!reduit && now - dernier < 32 && boucle) { boucle = requestAnimationFrame(dessiner); return; }
+      if (!(reduit || enPause) && now - dernier < 32 && boucle) { boucle = requestAnimationFrame(dessiner); return; }
       dernier = now;
       var encre = css("--ink"), orange = css("--orange"), t = (now - t0) / 1000;
       if (encre !== encreFond) preparerFond(encre);
       ctx.clearRect(0, 0, W, H);
       ctx.globalAlpha = 1; ctx.drawImage(fond, 0, 0, W, H);
+      liensSec.forEach(function (l) {
+        var a = proj(hubs[l[0]][1], hubs[l[0]][2]), b = proj(hubs[l[1]][1], hubs[l[1]][2]);
+        var mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2 - Math.hypot(b[0] - a[0], b[1] - a[1]) * .18;
+        ctx.strokeStyle = orange; ctx.globalAlpha = .22; ctx.lineWidth = .9;
+        ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.quadraticCurveTo(mx, my, b[0], b[1]); ctx.stroke();
+      });
       liens.forEach(function (l, i) {
         var a = proj(hubs[l[0]][1], hubs[l[0]][2]), b = proj(hubs[l[1]][1], hubs[l[1]][2]);
         var mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2 - Math.hypot(b[0] - a[0], b[1] - a[1]) * .18;
         ctx.strokeStyle = orange; ctx.globalAlpha = .45; ctx.lineWidth = 1.1;
         ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.quadraticCurveTo(mx, my, b[0], b[1]); ctx.stroke();
-        if (!reduit) { var p = (t * .22 + i * .137) % 1, q = 1 - p; ctx.globalAlpha = 1; ctx.fillStyle = orange; ctx.beginPath(); ctx.arc(q * q * a[0] + 2 * q * p * mx + p * p * b[0], q * q * a[1] + 2 * q * p * my + p * p * b[1], 2.1, 0, 7); ctx.fill(); }
+        if (!(reduit || enPause)) { var p = (t * .22 + i * .137) % 1, q = 1 - p; ctx.globalAlpha = 1; ctx.fillStyle = orange; ctx.beginPath(); ctx.arc(q * q * a[0] + 2 * q * p * mx + p * p * b[0], q * q * a[1] + 2 * q * p * my + p * p * b[1], 2.1, 0, 7); ctx.fill(); }
       });
       ctx.globalAlpha = 1;
       hubs.forEach(function (h) {
         var c = proj(h[1], h[2]), principal = h[3];
-        if (principal) { var pr = reduit ? 0 : (t % 2.4) / 2.4; ctx.strokeStyle = orange; ctx.globalAlpha = 1 - pr; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(c[0], c[1], 7 + pr * 16, 0, 7); ctx.stroke(); ctx.globalAlpha = 1; }
+        if (principal) { var pr = (reduit || enPause) ? 0 : (t % 2.4) / 2.4; ctx.strokeStyle = orange; ctx.globalAlpha = 1 - pr; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(c[0], c[1], 7 + pr * 16, 0, 7); ctx.stroke(); ctx.globalAlpha = 1; }
         ctx.fillStyle = principal ? orange : encre; ctx.beginPath(); ctx.arc(c[0], c[1], principal ? 5.5 : 3, 0, 7); ctx.fill();
       });
       var ab = proj(-4.0, 5.35);
-      ctx.font = "500 12px 'JetBrains Mono', monospace"; ctx.fillStyle = encre; ctx.textAlign = "right"; ctx.fillText("ABIDJAN", ab[0] - 12, ab[1] + 20);
-      if (!reduit && visible && !document.hidden) boucle = requestAnimationFrame(dessiner); else boucle = null;
+      ctx.font = "400 12px 'JetBrains Mono', monospace"; ctx.fillStyle = encre; ctx.textAlign = "right"; ctx.fillText("ABIDJAN", ab[0] - 12, ab[1] + 20);
+      if (!(reduit || enPause) && visible && !document.hidden) boucle = requestAnimationFrame(dessiner); else boucle = null;
     };
-    var relancer = function () { if (!boucle && visible && !document.hidden) boucle = requestAnimationFrame(dessiner); };
+    var relancer = function () { if (!boucle && !(reduit || enPause) && visible && !document.hidden) boucle = requestAnimationFrame(dessiner); };
+    /* Bouton pause : masqué si l'utilisateur a demandé moins d'animations (rien à arrêter) ; la pause vaut pour la page vue, rien n'est stocké dans le navigateur */
+    var majPause = function () {
+      var lib = enPause ? t("carteReprendre") : t("cartePause");
+      boutonPause.setAttribute("aria-label", lib); boutonPause.title = lib;
+      $(".ic-pause", boutonPause).toggleAttribute("hidden", enPause); $(".ic-lecture", boutonPause).toggleAttribute("hidden", !enPause);
+    };
+    if (boutonPause && !reduit) {
+      boutonPause.hidden = false; majPause();
+      boutonPause.addEventListener("click", function () {
+        enPause = !enPause;
+        majPause();
+        if (enPause) { if (boucle) { cancelAnimationFrame(boucle); boucle = null; } dessiner(performance.now()); } else relancer();
+      });
+    }
     construire(); dessiner(performance.now());
     window.addEventListener("resize", function () { construire(); if (!boucle) dessiner(performance.now()); });
     document.addEventListener("visibilitychange", relancer);

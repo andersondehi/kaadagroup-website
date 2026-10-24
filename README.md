@@ -1,46 +1,25 @@
 # Site Kaada Group — www.kaadagroup.com
 
-Site statique multi-pages (HTML, CSS, JavaScript) avec un petit script PHP pour les formulaires.
-Hébergement : Hostinger (le domaine kaadagroup.com y est déjà rattaché).
+Site statique bilingue (français à la racine, anglais dans `en/`), hébergé sur **Netlify**.
+Ce dépôt contient le site exactement tel qu'il est publié : Netlify le déploie à chaque envoi sur `main`.
 
-Les sources du site (générateur Python) sont dans le dépôt privé `kaadagroup-charte`, dossier `generateur-site/`.
-Ce dépôt contient uniquement le site prêt à publier : ne pas modifier les pages ici, elles sont regénérées.
+## Pages produits
 
-## Pages
+- `sankora.html` et `en/sankora.html` : **Sankora**, traçabilité agricole et conformité RDUE / EUDR
+  (contrôle et correction des polygones, analyse du risque de déforestation, lots tracés, dossier de diligence raisonnée).
+- `data4child.html` et `en/data4child.html` : **Data4Child**, module de Sankora pour le suivi et la remédiation
+  du travail des enfants (SSRTE / CLMRS).
+- Démonstrations animées : `js/sankora.js` ; styles : bloc `SANKORA:DEBUT … SANKORA:FIN` de `css/style.css`.
+- Ces pages et leurs entrées de menu sont produites par `outils/site-netlify/ajouter_sankora.py`
+  (dépôt `kaadagroup-charte`) : modifier les textes là-bas, puis relancer le script sur ce dossier.
 
-Accueil, Expertises, Technologies, Agritech, **Sankora** (page produit), Secteurs, Réalisations, Équipe, À propos,
-Carrières, Postuler, Contact, Ressources (3 articles), Mentions légales, page 404.
-Adresses courtes possibles : `www.kaadagroup.com/sankora`, `/contact`, `/agritech`…
+## Mise en ligne
 
-## Fichiers serveur
-
-| Fichier | Rôle |
-|---|---|
-| `.htaccess` | Redirection de kaadagroup.com vers www, adresses courtes, page 404, cache, en-têtes de sécurité |
-| `envoyer.php` | Reçoit les formulaires (contact, contact rapide, candidature avec CV, lettre d'information) et les envoie par e-mail |
-| `_messages/` | Créé automatiquement par `envoyer.php` : copie de chaque message et des CV, fermée au public |
-
-## Mise en ligne sur Hostinger (déploiement Git, recommandé)
-
-1. hPanel › Sites › kaadagroup.com › **Gestionnaire de fichiers** : vider le dossier `public_html`
-   (supprimer la page par défaut d'Hostinger).
-2. hPanel › Sites › kaadagroup.com › **Avancé › Git** : dans « Créer un dépôt », copier la **clé SSH** affichée.
-3. GitHub › dépôt `kaadagroup-website` › Settings › **Deploy keys** › Add deploy key : coller la clé (lecture seule).
-4. Retour dans hPanel › Git : dépôt `git@github.com:andersondehi/kaadagroup-website.git`, branche `main`,
-   répertoire vide (= `public_html`), puis **Créer**, puis **Déployer**.
-5. Activer le **déploiement automatique** (webhook) : chaque envoi sur `main` met le site à jour.
-6. hPanel › **SSL** : vérifier que le certificat est actif et activer « Forcer HTTPS ».
-
-Variante sans Git : télécharger le ZIP du dépôt, l'envoyer dans `public_html` avec le Gestionnaire de fichiers
-et l'extraire (les fichiers doivent être directement dans `public_html`, pas dans un sous-dossier).
-
-## E-mails
-
-Les formulaires envoient à `contact@kaadagroup.com` (candidatures : `carrieres@kaadagroup.com`), depuis
-`site@kaadagroup.com`. Ces adresses doivent exister dans hPanel › **E-mails** (boîtes ou redirections).
-Si un envoi échoue, le message reste enregistré dans `_messages/` et l'échec est noté dans `_messages/erreurs-envoi.log`.
-
-## Après la mise en ligne
-
-- Google Search Console : ajouter `https://www.kaadagroup.com/` et soumettre `sitemap.xml`.
-- Tester chaque formulaire une fois et vérifier la réception des e-mails.
+1. Netlify › site **kaadagroup** › Site configuration › Build & deploy › **Link repository** :
+   GitHub › `andersondehi/kaadagroup-website`, branche `main`, commande de build vide, dossier de publication `.`.
+2. Netlify › Domain management › **Add a domain** : `kaadagroup.com` (Netlify ajoute aussi `www`).
+3. Zone DNS de kaadagroup.com (gérée chez Hostinger, serveurs de noms `dns-parking.com`) :
+   - enregistrement **A** `@` → `75.2.60.5` (remplace les deux adresses Hostinger) ;
+   - enregistrement **CNAME** `www` → `kaadagroup.netlify.app` (remplace `www.kaadagroup.com.cdn.hstgr.net`) ;
+   - **ne pas toucher** aux enregistrements MX et TXT (SPF) : la messagerie reste chez Hostinger.
+4. Netlify › HTTPS : vérifier le certificat Let's Encrypt et activer « Force HTTPS ».
