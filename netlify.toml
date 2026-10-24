@@ -25,3 +25,68 @@
   to = "/404.html"
   status = 404
   force = true
+
+# Data4Child est un module de Sankora : ses pages vivent sous /sankora/data4child/
+# (anciennes adresses redirigées définitivement, 301)
+[[redirects]]
+  from = "/data4child"
+  to = "/sankora/data4child/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/data4child.html"
+  to = "/sankora/data4child/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/data4child-fonctionnement"
+  to = "/sankora/data4child/fonctionnement"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/data4child-fonctionnement.html"
+  to = "/sankora/data4child/fonctionnement"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/en/data4child"
+  to = "/en/sankora/data4child/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/en/data4child.html"
+  to = "/en/sankora/data4child/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/en/data4child-fonctionnement"
+  to = "/en/sankora/data4child/fonctionnement"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/en/data4child-fonctionnement.html"
+  to = "/en/sankora/data4child/fonctionnement"
+  status = 301
+  force = true
+
+# /sankora reste servie par sankora.html, même à côté du dossier sankora/
+[[redirects]]
+  from = "/sankora"
+  to = "/sankora.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/sankora/"
+  to = "/sankora"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/en/sankora"
+  to = "/en/sankora.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/en/sankora/"
+  to = "/en/sankora"
+  status = 301
+  force = true
