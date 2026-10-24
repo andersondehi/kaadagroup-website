@@ -526,6 +526,57 @@
     if ("IntersectionObserver" in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; relancer(); }).observe(cv);
     var mq = window.matchMedia("(prefers-color-scheme: dark)");
     if (mq.addEventListener) mq.addEventListener("change", function () { if (!boucle) dessiner(performance.now()); });
+    document.addEventListener("kdg:theme", function () { if (!boucle) dessiner(performance.now()); });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (!boucle) dessiner(performance.now()); });
   }
+  /* MODERNISATION:DEBUT */
+/* Bloc géré par outils/site-netlify/moderniser_site.py (charte v2.2, ch. 16) */
+  /* ---------- Thème clair / sombre / système, mémorisé ---------- */
+  (function () {
+    var CLE = "kdg-theme", racine = document.documentElement;
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    var LBL = LANGUE === "en" ? { dark: "Switch to dark theme", light: "Switch to light theme" } : { dark: "Passer en thème sombre", light: "Passer en thème clair" };
+    // Images et couleur de barre prévues pour un thème : elles suivent le thème choisi, pas seulement celui du système
+    var sources = $$('source[media*="prefers-color-scheme"], meta[name="theme-color"][media]');
+    sources.forEach(function (s) { s.setAttribute("data-media-origine", s.getAttribute("media")); });
+    var lire = function () { try { var v = localStorage.getItem(CLE); return v === "light" || v === "dark" ? v : "auto"; } catch (e) { return "auto"; } };
+    var effectif = function (c) { return c === "auto" ? (mq.matches ? "dark" : "light") : c; };
+    function appliquer(c, memoriser) {
+      if (c === "auto") racine.removeAttribute("data-theme"); else racine.setAttribute("data-theme", c);
+      if (memoriser) { try { if (c === "auto") localStorage.removeItem(CLE); else localStorage.setItem(CLE, c); } catch (e) {} }
+      var eff = effectif(c);
+      sources.forEach(function (s) {
+        var o = s.getAttribute("data-media-origine");
+        s.setAttribute("media", c === "auto" ? o : ((o.indexOf("dark") > -1) === (eff === "dark") ? "all" : "not all"));
+      });
+      $$("[data-theme-choix]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-theme-choix") === c)); });
+      $$("[data-theme-bascule]").forEach(function (b) { var l = eff === "dark" ? LBL.light : LBL.dark; b.setAttribute("aria-label", l); b.title = l; });
+      document.dispatchEvent(new CustomEvent("kdg:theme", { detail: { choix: c, effectif: eff } }));
+    }
+    function changer(c) {
+      if (document.startViewTransition && !reduit) document.startViewTransition(function () { appliquer(c, true); });
+      else appliquer(c, true);
+    }
+    $$("[data-theme-bascule]").forEach(function (b) { b.addEventListener("click", function () { changer(effectif(lire()) === "dark" ? "light" : "dark"); }); });
+    $$("[data-theme-choix]").forEach(function (b) { b.addEventListener("click", function () { changer(b.getAttribute("data-theme-choix")); }); });
+    if (mq.addEventListener) mq.addEventListener("change", function () { if (lire() === "auto") appliquer("auto", false); });
+    appliquer(lire(), false);
+  })();
+
+  /* ---------- En-tête : se range quand on descend, revient dès qu'on remonte ---------- */
+  (function () {
+    var e = $("#entete"); if (!e) return;
+    var dernier = window.scrollY, attente = false;
+    window.addEventListener("scroll", function () {
+      if (attente) return; attente = true;
+      requestAnimationFrame(function () {
+        var y = window.scrollY, d = y - dernier;
+        if (document.body.classList.contains("menu-ouvert") || y < 480 || d < -6) e.classList.remove("masque");
+        else if (d > 6 && !e.contains(document.activeElement)) e.classList.add("masque");
+        if (Math.abs(d) > 6) dernier = y;
+        attente = false;
+      });
+    }, { passive: true });
+  })();
+/* MODERNISATION:FIN */
 })();

@@ -1496,3 +1496,111 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
 .kf-merci .actions{justify-content:center}
 
 /* SANKORA:FIN */
+/* MODERNISATION:DEBUT */
+/* Modernisation 2026-10 · charte v2.2, chapitre 16 (jetons, mouvement, focus, états).
+   Bloc géré par outils/site-netlify/moderniser_site.py : ne pas modifier à la main dans le site. */
+
+/* ---------- En-tête : se compacte au défilement, se range quand on descend, revient quand on remonte ---------- */
+.entete{transition:border-color .3s,transform .4s var(--courbe-douce),margin-bottom var(--mv-moyen) var(--courbe-douce)}
+.entete .wrap{transition:height var(--mv-moyen) var(--courbe-douce)}
+/* La marge compense la hauteur perdue : le contenu ne saute pas */
+.entete.defile{margin-bottom:12px}
+.entete.defile .wrap{height:60px}
+.entete.masque{transform:translateY(-110%)}
+.entete:focus-within{transform:none}
+
+/* ---------- Thème : bouton de l'en-tête ---------- */
+.bouton-theme{display:inline-grid;place-items:center;flex:none;width:44px;height:44px;padding:0;border-radius:99px;border:1.5px solid var(--line-2);background:var(--surface);color:var(--ink);cursor:pointer;transition:border-color var(--mv-court)}
+.bouton-theme:hover{border-color:var(--ink)}
+.bouton-theme svg{grid-area:1/1;width:19px;height:19px;transition:opacity .25s ease,transform .45s var(--courbe-douce)}
+.bouton-theme .ic-soleil{opacity:0;transform:rotate(-70deg) scale(.5)}
+:root[data-theme="dark"] .bouton-theme .ic-soleil{opacity:1;transform:none}
+:root[data-theme="dark"] .bouton-theme .ic-lune{opacity:0;transform:rotate(70deg) scale(.5)}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .bouton-theme .ic-soleil{opacity:1;transform:none}
+  :root:not([data-theme="light"]) .bouton-theme .ic-lune{opacity:0;transform:rotate(70deg) scale(.5)}
+}
+/* Très petits écrans : le choix du thème reste dans le pied de page */
+@media (max-width:359px){.bouton-theme{display:none}}
+
+/* ---------- Thème : choix à trois options dans le pied de page ---------- */
+.theme-choix{display:inline-flex;flex-wrap:wrap;align-items:center;gap:2px;font-family:var(--f-mono);font-size:12px}
+.theme-choix>span{margin-right:6px}
+.theme-choix button{min-height:32px;padding:0 10px;border:1px solid transparent;border-radius:99px;background:none;color:var(--band-muted);font:inherit;cursor:pointer;transition:color var(--mv-court),border-color var(--mv-court)}
+.theme-choix button:hover{color:var(--band-fg)}
+/* État sélectionné : bordure et coche, pas seulement la couleur */
+.theme-choix button[aria-pressed="true"]{color:var(--band-fg);border-color:var(--band-muted)}
+.theme-choix button[aria-pressed="true"]::before{content:"✓\00a0"}
+
+/* ---------- Expertises : grille modulaire ---------- */
+.grille-exp.bento-exp{gap:16px;border:0}
+.bento-exp>a{border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.grille-exp.bento-exp>a:hover{background:var(--surface)}
+.bento-exp>.exp-vedette{background:var(--orange-soft);border-color:color-mix(in srgb,var(--orange) 30%,transparent)}
+.grille-exp.bento-exp>.exp-vedette:hover{background:var(--orange-soft)}
+.bento-exp>.exp-vedette h3{font-size:clamp(1.6rem,2.6vw,2.15rem)}
+.bento-exp>.exp-vedette p{font-size:17px;color:var(--ink-2);max-width:46ch}
+.bento-exp>.exp-tout{background:var(--bg-2);gap:10px}
+.grille-exp.bento-exp>.exp-tout:hover{background:var(--bg-2)}
+.bento-exp>.exp-tout h3{font-size:1.32rem;max-width:30ch}
+.bento-exp .exp-tout-illus{margin:6px 0 0}
+.bento-exp>.exp-vedette{order:-1}
+@media (min-width:760px){
+  .grille-exp.bento-exp{grid-template-columns:repeat(2,1fr)}
+  .bento-exp>.exp-vedette{grid-column:span 2}
+}
+@media (min-width:980px){
+  .grille-exp.bento-exp{grid-template-columns:repeat(3,1fr);grid-auto-flow:row dense}
+  .bento-exp>.exp-tout{grid-column:span 2}
+  .bento-exp>.exp-vedette{padding:36px 34px}
+}
+
+/* ---------- Conduite de projet, réunie avec « Pourquoi Kaada Group » ---------- */
+.etapes-bloc{margin-top:clamp(56px,7vw,88px);padding-top:clamp(40px,5vw,56px);border-top:1px solid var(--line)}
+.etapes-tete{display:grid;grid-template-columns:1fr 1fr;gap:12px 48px;align-items:end;margin-bottom:clamp(28px,4vw,40px)}
+.etapes-tete .eyebrow{grid-column:1/-1}
+.etapes-tete h3{font-size:clamp(1.6rem,2.6vw,2.15rem);line-height:1.08}
+.etapes-tete p{color:var(--muted)}
+.etape h4{font-size:1.15rem;margin:12px 0 6px}
+@media (max-width:860px){.etapes-tete{grid-template-columns:1fr}}
+
+/* ---------- Téléphone : cartes en défilement horizontal ---------- */
+@media (max-width:759px){
+  .defil-mobile{display:grid!important;grid-auto-flow:column;grid-auto-columns:min(84%,340px);grid-template-columns:none!important;gap:12px!important;
+    overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:clamp(16px,4vw,40px);
+    margin-inline:calc(-1 * clamp(16px,4vw,40px));padding:2px clamp(16px,4vw,40px) 14px;
+    border:0!important;border-radius:0!important;scrollbar-width:thin;scrollbar-color:var(--line-2) transparent}
+  .defil-mobile>*{scroll-snap-align:start;grid-column:auto!important;grid-row:auto!important;min-width:0}
+  .js .defil-mobile>.rv,.js .defil-mobile.rv{opacity:1;translate:none;animation:none}
+  .etapes.defil-mobile{grid-auto-columns:min(72%,280px)}
+  .flux.defil-mobile{overflow-x:auto}
+  .flux.defil-mobile li{border:1px solid var(--band-line)!important;border-radius:var(--r)}
+  .pourquoi-grille.defil-mobile .pourquoi{grid-template-columns:1fr;gap:12px;padding:22px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+  .sombre .defil-mobile{scrollbar-color:var(--band-line) transparent}
+  /* Secteurs : tuiles compactes, deux colonnes, sans paragraphe */
+  .secteurs-compact{gap:10px}
+  .secteurs-compact .tuile,.secteurs-compact .tuile.s3,.secteurs-compact .tuile.s4{grid-column:span 6;padding:16px 14px;gap:8px}
+  .secteurs-compact .tuile:last-child{grid-column:span 12}
+  .secteurs-compact .tuile p{display:none}
+  .secteurs-compact .tuile h3,.secteurs-compact .tuile.s3 h3{font-size:1.02rem}
+  .secteurs-compact .tuile .ico svg{width:24px;height:24px}
+}
+
+/* ---------- Pied de page plus court sur téléphone ---------- */
+@media (max-width:520px){
+  .pied-grille{grid-template-columns:1fr 1fr;gap:28px 20px}
+  .pied-grille>div:first-child,.pied-grille>div:last-child{grid-column:1/-1}
+}
+
+/* ---------- Barre d'actions mobile : bouton Menu à portée de pouce ---------- */
+.bmo-menu{display:none}
+@media (max-width:760px){
+  .barre-mobile{--focus:#EC6508;grid-template-columns:44px minmax(0,1fr) minmax(0,1fr) minmax(0,1.5fr)}
+  .bmo-menu{display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:99px;background:var(--band-3);color:var(--band-fg);cursor:pointer}
+}
+@media (max-width:420px){
+  .barre-mobile{grid-template-columns:44px auto auto minmax(0,1fr)}
+  .barre-mobile a:not(.principal){font-size:0;gap:0;padding-inline:13px}
+  .barre-mobile a:not(.principal) svg{width:18px;height:18px}
+}
+/* MODERNISATION:FIN */
