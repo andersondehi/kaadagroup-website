@@ -1,4 +1,4 @@
-# Kaada Group · www.kaadagroup.com — site statique, publié tel quel
+# Kaada Group · kaadagroup.com — site statique, publié tel quel
 [build]
   publish = "."
 

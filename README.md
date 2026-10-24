@@ -1,4 +1,4 @@
-# Site Kaada Group — www.kaadagroup.com
+# Site Kaada Group — kaadagroup.com
 
 Site statique bilingue (français à la racine, anglais dans `en/`), hébergé sur **Netlify**.
 Ce dépôt contient le site exactement tel qu'il est publié : Netlify le déploie à chaque envoi sur `main`.

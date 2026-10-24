@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.kaadagroup.com/sitemap.xml
+Sitemap: https://kaadagroup.com/sitemap.xml
