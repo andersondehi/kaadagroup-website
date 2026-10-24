@@ -1588,6 +1588,37 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
 .kc-loupe-aide{margin:0;padding:8px 20px;font-family:var(--f-mono);font-size:12px;color:var(--band-muted);border-top:1px solid var(--band-line)}
 @media (max-width:760px){.kc-loupe{width:100vw;height:100dvh;border-radius:0;border:0}.kc-loupe-aide{display:none}}
 
+/* ---------- Pages texte « Comment fonctionne… » (fonctionnement.py) ---------- */
+.fn-hero{padding-block:clamp(40px,6vw,88px) clamp(28px,4vw,48px);border-bottom:1px solid var(--line);background:var(--bg-2)}
+.fn-hero .eyebrow{margin-top:22px}
+.fn-hero h1{margin-top:14px;max-width:24ch}
+.fn-hero .lead{margin-top:18px;max-width:62ch}
+.fn-lecture{margin-top:18px;font-family:var(--f-mono);font-size:12.5px;color:var(--muted)}
+.fn-grille{display:grid;grid-template-columns:minmax(0,1fr);gap:32px;padding-block:clamp(32px,5vw,64px) clamp(64px,8vw,104px)}
+.fn-sommaire p{font-family:var(--f-mono);font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--orange-ink);margin-bottom:12px}
+.fn-sommaire ol{display:grid;gap:2px}
+.fn-sommaire a{display:flex;gap:10px;padding:7px 0;color:var(--ink-2);text-decoration:none;font-size:15px;line-height:1.35}
+.fn-sommaire a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.fn-sommaire .n{font-family:var(--f-mono);font-size:12px;color:var(--muted);padding-top:2px}
+.fn-article{max-width:72ch}
+.fn-section{padding-block:clamp(24px,3vw,36px);border-top:1px solid var(--line);scroll-margin-top:calc(var(--entete) + 24px)}
+.fn-section:first-child{border-top:0;padding-top:0}
+.fn-section .n{font-family:var(--f-mono);font-size:12.5px;color:var(--orange-ink)}
+.fn-section h2{font-size:clamp(1.6rem,2.6vw,2.15rem);line-height:1.08;margin:8px 0 6px}
+.fn-section p{margin-top:14px;color:var(--ink-2);font-size:17px;line-height:1.65}
+.fn-section .coches{margin-top:16px}
+.fn-cta{margin-top:clamp(28px,4vw,40px);padding:clamp(24px,3vw,36px);border-radius:var(--r);background:var(--orange-soft);border:1px solid color-mix(in srgb,var(--orange) 30%,transparent)}
+.fn-cta h2{font-size:clamp(1.5rem,2.4vw,2rem)}
+.fn-cta p{margin-top:10px;color:var(--ink-2)}
+.fn-cta .actions{margin-top:20px}
+.fn-autre{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;margin-top:28px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted)}
+.kc-lire{margin-top:18px}
+@media (min-width:980px){
+  .fn-grille{grid-template-columns:240px minmax(0,1fr);gap:clamp(48px,6vw,88px)}
+  .fn-sommaire{position:sticky;top:calc(var(--entete) + 32px);align-self:start}
+}
+@media (max-width:979px){.fn-sommaire{padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}}
+
 /* SANKORA:FIN */
 /* MODERNISATION:DEBUT */
 /* Modernisation 2026-10 · charte v2.2, chapitre 16 (jetons, mouvement, focus, états).
