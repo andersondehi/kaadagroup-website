@@ -1781,3 +1781,50 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
 /* ---------- Moins d'éléments flottants : WhatsApp reste dans le contact, la barre mobile et le pied de page ---------- */
 .whatsapp{display:none!important}
 /* MODERNISATION:FIN */
+/* STYLE-INSPIRE:DEBUT */
+/* Style « inspiré » : contenu inchangé ; rythme plus aéré, grands titres serrés, navigation en pastille,
+   cartes douces, bandes sombres chaleureuses, signature Kaada Group en grand avant le pied de page. */
+
+/* Pastille de navigation au centre de l'en-tête */
+.pastille{margin:0 auto;display:flex;align-items:center;gap:2px;padding:5px;border-radius:99px;background:var(--orange);box-shadow:0 12px 26px -16px rgba(180,75,3,.75)}
+.pastille a{white-space:nowrap;font-size:14.5px;font-weight:600;color:var(--on-orange);text-decoration:none;padding:8px 14px;border-radius:99px;transition:background-color var(--mv-court)}
+.pastille a:hover,.pastille a[aria-current="page"]{background:rgba(255,255,255,.24)}
+.pastille a.pastille-maison{display:grid;place-items:center;width:34px;height:34px;padding:0;background:rgba(255,255,255,.28)}
+.pastille a.pastille-maison svg{width:17px;height:17px}
+.entete .entete-cta{background:transparent;color:var(--orange-ink);border:1.5px solid var(--orange)}
+.entete .entete-cta:hover{background:var(--orange);color:var(--on-orange)}
+.entete .bm-raccourci{display:none}
+@media (min-width:1181px){.ile{display:none}}
+@media (max-width:1180px){.pastille{display:none}}
+
+/* Grands titres, plus serrés ; plus d'air entre les sections */
+.t-xl{font-size:clamp(2.6rem,5.6vw,4.7rem);letter-spacing:-.04em;line-height:1}
+.t-l{font-size:clamp(2.1rem,4.2vw,3.5rem);font-weight:800;letter-spacing:-.035em;line-height:1.02}
+.t-m{letter-spacing:-.03em}
+.section{padding-block:clamp(80px,10vw,136px)}
+.hero{padding-block:clamp(52px,7vw,96px) clamp(48px,6vw,80px)}
+.lead{font-size:clamp(1.06rem,1.4vw,1.2rem)}
+
+/* Cartes plus douces : grands rayons, ombres légères, léger soulèvement au survol */
+.sk-produit{border-radius:28px}
+.grille-exp.bento-exp>a,.grille-exp.bento-exp>article{border-radius:24px}
+.cas{border-radius:24px}
+.cas:hover,.grille-exp.bento-exp>a:hover{transform:translateY(-4px)}
+.ph,.ph img{border-radius:20px}
+
+/* Bandes sombres chaleureuses : halo orangé, et fin de page aux coins arrondis */
+.sombre{overflow:hidden}
+.sombre::after{content:"";position:absolute;right:-12%;top:-30%;width:62%;aspect-ratio:1;background:radial-gradient(circle,rgba(236,101,8,.30),rgba(200,54,28,.10) 42%,transparent 70%);pointer-events:none;z-index:0}
+.sombre>.wrap{position:relative;z-index:1}
+.contact-bande{border-radius:clamp(24px,3.4vw,44px) clamp(24px,3.4vw,44px) 0 0;margin-top:clamp(24px,4vw,48px)}
+.contact-bande h2{font-size:clamp(2.4rem,5vw,4.2rem);letter-spacing:-.04em;line-height:1.02}
+
+/* Signature : le nom en très grand, juste avant le pied de page */
+.signature{background:var(--band);color:var(--band-fg);overflow:hidden;padding-top:clamp(24px,4vw,56px)}
+.signature p{margin:0;font-family:var(--f-titre);font-weight:800;letter-spacing:-.055em;line-height:.8;font-size:clamp(56px,15vw,216px);white-space:nowrap;text-align:center;padding-bottom:.08em}
+.signature span{color:var(--orange)}
+.contact-bande+.signature{padding-top:0}
+
+@media (prefers-reduced-motion:reduce){.cas:hover,.grille-exp.bento-exp>a:hover{transform:none}}
+
+/* STYLE-INSPIRE:FIN */
