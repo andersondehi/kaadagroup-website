@@ -578,5 +578,31 @@
       });
     }, { passive: true });
   })();
+
+  /* ---------- Une seule navigation à la fois : l'île n'apparaît que lorsque l'en-tête est rangé ---------- */
+  (function () {
+    var e = $("#entete"), ile = $(".ile"); if (!e || !ile || !("MutationObserver" in window)) return;
+    var maj = function () {
+      var v = e.classList.contains("masque") && window.scrollY > 360 && !document.body.classList.contains("menu-ouvert");
+      ile.classList.toggle("visible", v); ile.inert = !v;
+    };
+    new MutationObserver(maj).observe(e, { attributes: true, attributeFilter: ["class"] });
+    window.addEventListener("scroll", function () { requestAnimationFrame(maj); }, { passive: true });
+    maj();
+  })();
+
+  /* ---------- Récit au défilement : l'écran suit l'étape lue ---------- */
+  $$("[data-recit]").forEach(function (r) {
+    var etapes = $$(".recit-etape", r), imgs = $$(".recit-img", r);
+    if (!("IntersectionObserver" in window)) return;
+    var activer = function (i) {
+      etapes.forEach(function (x) { x.classList.toggle("actif", x.getAttribute("data-etape") === i); });
+      imgs.forEach(function (x) { x.classList.toggle("actif", x.getAttribute("data-etape") === i); });
+    };
+    var io = new IntersectionObserver(function (en) {
+      en.forEach(function (x) { if (x.isIntersecting) activer(x.target.getAttribute("data-etape")); });
+    }, { rootMargin: "-45% 0px -45% 0px" });
+    etapes.forEach(function (x) { io.observe(x); });
+  });
 /* MODERNISATION:FIN */
 })();

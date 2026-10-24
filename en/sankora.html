@@ -33,7 +33,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="/assets/fonts/source-sans-3-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/bricolage-grotesque-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/css/style.css?v=32a721c6">
+<link rel="stylesheet" href="/css/style.css?v=0d83e592">
 <script>(function(d){d.classList.add("js");try{var t=localStorage.getItem("kdg-theme");if(t==="light"||t==="dark")d.setAttribute("data-theme",t)}catch(e){}})(document.documentElement)</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Sankora", "applicationCategory": "BusinessApplication", "operatingSystem": "Web, Android", "description": "Sankora, Kaada Group's platform for cocoa traceability and EUDR compliance: checked and auto-corrected polygons, built-in deforestation analysis, fully traced lots, due diligence files.", "url": "https://kaadagroup.com/en/sankora.html", "inLanguage": ["fr", "en"], "publisher": {"@type": "Organization", "name": "Kaada Group", "url": "https://kaadagroup.com/"}, "offers": {"@type": "Offer", "priceCurrency": "XOF", "description": "Modular subscription, on quotation"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Our polygons come from several providers: is that a problem?", "acceptedAnswer": {"@type": "Answer", "text": "No. Sankora applies the same checks to every survey, whatever its source or format. Common defects are corrected automatically; the others are listed with their reason so the provider can fix them."}}, {"@type": "Question", "name": "Can we bring in our existing data?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Sankora imports your farmer and plot register from Excel, and your polygons in GeoJSON, KML or GPX. Every line is checked before import and errors are explained."}}, {"@type": "Question", "name": "How does Sankora analyse deforestation risk?", "acceptedAnswer": {"@type": "Answer", "text": "Each plot (its polygon, or its GPS point with a buffer zone) is compared with tree cover on 31 December 2020, year-by-year tree cover loss and recent alerts, using Global Forest Watch data and the layers you import. The least favourable source prevails, and every analysis is kept as evidence."}}, {"@type": "Question", "name": "Does Sankora file the due diligence statement?", "acceptedAnswer": {"@type": "Answer", "text": "Sankora prepares the complete file: statement data, geolocation in the expected format, analyses, risk assessment and supporting documents. Filing in the EU information system remains the responsibility of the operator placing the product on the EU market."}}, {"@type": "Question", "name": "Which commodities are covered?", "acceptedAnswer": {"@type": "Answer", "text": "Ivorian cocoa first. Sankora is designed for several commodities (coffee, cashew, rubber…) and several countries: products, seasons, prices and rules are configured per commodity."}}, {"@type": "Question", "name": "How is Sankora priced?", "acceptedAnswer": {"@type": "Answer", "text": "By subscription: a set-up fee, then a monthly fee based on the modules chosen and the number of farmers. The quote is prepared after the demo."}}]}</script>
@@ -99,20 +99,7 @@
       <div class="actions"><a class="btn btn-p" href="#demande-demo">Request a demo <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn btn-s" href="#en-action">See Sankora in action</a></div>
       <ul class="sk-preuves"><li>EUDR-ready</li><li>Polygons corrected automatically</li><li>Built-in satellite analysis</li><li>Lots 100% traced</li></ul>
     </div>
-    <figure class="sk-app" aria-label="Illustrative preview · sample data">
-  <div class="sk-app-barre"><span class="sk-pts"><i></i><i></i><i></i></span><span class="sk-url">Sankora · Dashboard</span></div>
-  <div class="sk-app-corps">
-    <div class="sk-app-tete"><svg class="sk-mini" width="26" height="26" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17573A"/><path d="M20 6.5 L27.5 11 L30 19.5 L27 28.5 L20 33.5 L13 28.5 L10 19.5 L12.5 11 Z" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/><path d="M20 8 L20 32" stroke="#fff" stroke-opacity=".45" stroke-width="1.4"/><circle cx="20" cy="6.5" r="2.6" fill="#EC6508"/><circle cx="27.5" cy="11" r="1.5" fill="#fff"/><circle cx="30" cy="19.5" r="1.5" fill="#fff"/><circle cx="27" cy="28.5" r="1.5" fill="#fff"/><circle cx="20" cy="33.5" r="1.5" fill="#fff"/><circle cx="13" cy="28.5" r="1.5" fill="#fff"/><circle cx="10" cy="19.5" r="1.5" fill="#fff"/><circle cx="12.5" cy="11" r="1.5" fill="#fff"/></svg><b>Demo cooperative</b><span class="sk-badge">2026-2027 season</span></div>
-    <div class="sk-kpis"><div><small>Farmers</small><b>1,248</b></div><div><small>Geolocated plots</small><b>98%</b></div><div class="ok"><small>EUDR-traced share</small><b>96.4%</b></div><div><small>Left to pay</small><b>2.1 M</b></div></div>
-    <div class="sk-app-bas">
-      <svg class="sk-plan" viewBox="0 0 220 130" aria-hidden="true"><rect width="220" height="130" rx="8" class="sk-plan-fond"/><path d="M0 96 C40 82 70 108 112 92 S190 70 220 84 V130 H0Z" class="sk-plan-sol"/>
-        <g stroke-width="1.6" stroke-linejoin="round"><polygon points="22,30 62,22 74,52 34,62" class="sk-p-ok"/><polygon points="84,22 128,18 134,50 90,58" class="sk-p-ok"/><polygon points="146,26 188,22 196,58 152,64" class="sk-p-av"/><polygon points="34,74 78,68 84,104 40,110" class="sk-p-ok"/><polygon points="98,72 146,78 140,112 102,106" class="sk-p-ok"/><polygon points="158,78 200,74 206,108 164,114" class="sk-p-ri"/></g>
-        <g class="sk-plan-pts"><circle cx="22" cy="30" r="2.4"/><circle cx="62" cy="22" r="2.4"/><circle cx="74" cy="52" r="2.4"/><circle cx="34" cy="62" r="2.4"/></g></svg>
-      <div class="sk-lot"><span class="sk-lot-id">LOT-2627-0142</span><b>12,480 kg · 214 bags</b><ul><li>100% traced to the plot</li><li>No deforestation after 2020</li><li>Risk assessment approved</li></ul><span class="sk-etat">Ready to ship</span></div>
-    </div>
-  </div>
-  <figcaption>Illustrative preview · sample data</figcaption>
-</figure>
+    <figure class="kc-ecran kc-hero"><div class="kc-barre" aria-hidden="true"><span class="kc-pts"><i></i><i></i><i></i></span><span class="kc-url">Sankora</span></div><img src="/assets/img/captures/sk-tableau-1600.webp" srcset="/assets/img/captures/sk-tableau-880.webp 880w, /assets/img/captures/sk-tableau-1600.webp 1600w" sizes="(min-width:980px) 600px, 92vw" width="1600" height="1000" alt="Cooperative dashboard : Compliant plots, farmers, measured areas and map, on one screen." loading="eager" decoding="async"><figcaption>Real screenshot · fictitious data</figcaption></figure>
   </div>
 </section>
 
@@ -194,6 +181,15 @@
     </div>
   </div>
 </section>
+
+<section class="section kc-galerie" id="captures" aria-labelledby="titre-captures">
+  <div class="wrap">
+    <div class="tete-section rv"><div><span class="eyebrow">The application</span><h2 class="t-l" id="titre-captures">Sankora, as your teams will use it.</h2></div><p class="lead">No mock-ups: these are screens of the application, taken from our demo.</p></div>
+    <div class="kc-gal defil-mobile"><figure class="kc-gal-item rv d0"><div class="kc-ecran kc-mini"><div class="kc-barre" aria-hidden="true"><span class="kc-pts"><i></i><i></i><i></i></span></div><img src="/assets/img/captures/sk-polygones-1600.webp" srcset="/assets/img/captures/sk-polygones-880.webp 880w, /assets/img/captures/sk-polygones-1600.webp 1600w" sizes="(min-width:980px) 580px, 86vw" width="1600" height="1000" alt="" loading="lazy" decoding="async"></div><figcaption><b>Polygons on satellite imagery</b><span>Each plot coloured by status, alerts highlighted.</span></figcaption></figure><figure class="kc-gal-item rv d1"><div class="kc-ecran kc-mini"><div class="kc-barre" aria-hidden="true"><span class="kc-pts"><i></i><i></i><i></i></span></div><img src="/assets/img/captures/sk-controle-1600.webp" srcset="/assets/img/captures/sk-controle-880.webp 880w, /assets/img/captures/sk-controle-1600.webp 1600w" sizes="(min-width:980px) 580px, 86vw" width="1600" height="1000" alt="" loading="lazy" decoding="async"></div><figcaption><b>Polygon checks and corrections</b><span>Compliance rate, automatic corrections and failed rules.</span></figcaption></figure><figure class="kc-gal-item rv d0"><div class="kc-ecran kc-mini"><div class="kc-barre" aria-hidden="true"><span class="kc-pts"><i></i><i></i><i></i></span></div><img src="/assets/img/captures/sk-parcelles-1600.webp" srcset="/assets/img/captures/sk-parcelles-880.webp 880w, /assets/img/captures/sk-parcelles-1600.webp 1600w" sizes="(min-width:980px) 580px, 86vw" width="1600" height="1000" alt="" loading="lazy" decoding="async"></div><figcaption><b>Plot register</b><span>List and map side by side, filters by status, section and programme.</span></figcaption></figure><figure class="kc-gal-item rv d1"><div class="kc-ecran kc-mini"><div class="kc-barre" aria-hidden="true"><span class="kc-pts"><i></i><i></i><i></i></span></div><img src="/assets/img/captures/sk-diligence-1600.webp" srcset="/assets/img/captures/sk-diligence-880.webp 880w, /assets/img/captures/sk-diligence-1600.webp 1600w" sizes="(min-width:980px) 580px, 86vw" width="1600" height="1000" alt="" loading="lazy" decoding="async"></div><figcaption><b>Due diligence files</b><span>One statement per shipment, from preparation to submission.</span></figcaption></figure></div>
+    <p class="kc-note">Real screenshots of the application · fictitious demo data</p>
+  </div>
+</section>
+
 
 <section class="section" aria-labelledby="titre-avant">
   <div class="wrap">
@@ -308,7 +304,7 @@
   <a href="https://wa.me/2250545616565" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.5L3 21l1.5-5.2A8.5 8.5 0 1 1 21 12z"/></svg>WhatsApp</a>
   <a class="principal" href="contact.html">Free assessment</a>
 </nav>
-<script src="/js/main.js?v=f83c887a" defer></script>
+<script src="/js/main.js?v=e7768a4b" defer></script>
 <script src="/js/sankora.js?v=dccc7b30" defer></script>
 </body>
 </html>

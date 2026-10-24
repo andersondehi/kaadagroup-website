@@ -1495,6 +1495,35 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
 .kf-merci-ico svg{width:36px;height:36px}
 .kf-merci .actions{justify-content:center}
 
+/* ---------- Captures réelles (captures.py) : cadre de navigateur, héros, galerie ---------- */
+.kc-ecran{margin:0;border-radius:var(--r-l);overflow:hidden;background:var(--surface);border:1px solid var(--line)}
+.kc-barre{display:flex;align-items:center;gap:12px;height:30px;padding:0 12px;background:var(--bg-2);border-bottom:1px solid var(--line)}
+.kc-pts{display:flex;gap:5px}
+.kc-pts i{width:8px;height:8px;border-radius:50%;background:var(--line-2)}
+.kc-url{font-family:var(--f-mono);font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:1px 12px}
+.kc-ecran img{display:block;width:100%;height:auto}
+.kc-ecran figcaption{padding:8px 14px;border-top:1px solid var(--line);font-family:var(--f-mono);font-size:12px;letter-spacing:.03em;color:var(--muted)}
+.kc-hero{width:100%;max-width:680px;justify-self:end;box-shadow:var(--ombre)}
+@media (min-width:980px) and (prefers-reduced-motion:no-preference){
+  .kc-hero{transform:perspective(1800px) rotateY(-7deg) rotateX(2deg);transition:transform .8s var(--courbe-douce)}
+  .kc-hero:hover{transform:none}
+}
+.kc-duo{position:relative;justify-self:end;width:100%;max-width:680px}
+.kc-duo .kc-hero{max-width:none}
+.kc-fiche{position:absolute;left:-36px;top:10%;width:clamp(140px,14vw,200px);margin:0;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--surface);box-shadow:var(--ombre)}
+.kc-fiche img{display:block;width:100%;height:auto}
+@media (max-width:980px){.kc-hero,.kc-duo{justify-self:start}.kc-fiche{left:auto;right:-6px;top:auto;bottom:-30px}}
+.kc-gal{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(20px,3vw,32px)}
+.kc-gal-item{margin:0;min-width:0}
+.kc-mini .kc-barre{height:22px;padding:0 10px}
+.kc-mini .kc-pts i{width:6px;height:6px}
+.kc-gal-item figcaption{display:grid;gap:4px;margin-top:14px}
+.kc-gal-item figcaption b{font-family:var(--f-titre);font-size:1.25rem;font-weight:700;letter-spacing:-.02em;line-height:1.2}
+.kc-gal-item figcaption span{color:var(--muted);font-size:15.5px}
+.kc-note{margin-top:22px;font-family:var(--f-mono);font-size:12.5px;color:var(--muted)}
+.sk-pv-vis img{display:block;width:100%;height:auto}
+.sombre .kc-ecran{border-color:var(--band-line)}
+
 /* SANKORA:FIN */
 /* MODERNISATION:DEBUT */
 /* Modernisation 2026-10 · charte v2.2, chapitre 16 (jetons, mouvement, focus, états).
@@ -1603,4 +1632,57 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
   .barre-mobile a:not(.principal){font-size:0;gap:0;padding-inline:13px}
   .barre-mobile a:not(.principal) svg{width:18px;height:18px}
 }
+
+/* ---------- Héros : capture réelle posée sur la carte d'Afrique ---------- */
+.carte-stage{position:relative}
+.hero-ecran{position:absolute;right:0;bottom:2%;width:min(70%,480px);display:block;text-decoration:none;z-index:2}
+.hero-ecran .kc-ecran{box-shadow:var(--ombre)}
+.hero-ecran .kc-barre{height:22px;padding:0 10px}
+.hero-ecran .kc-pts i{width:6px;height:6px}
+.hero-ecran .kc-url{font-size:12px;padding:0 10px}
+.hero-ecran-tag{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:14.5px;font-weight:600;color:var(--orange-ink)}
+.hero-ecran-tag svg{width:16px;height:16px;transition:transform var(--duree,.2s)}
+.hero-ecran:hover .hero-ecran-tag svg{transform:translateX(3px)}
+@media (prefers-reduced-motion:no-preference){
+  .hero-ecran .kc-ecran{transition:transform .5s var(--courbe-douce)}
+  .hero-ecran:hover .kc-ecran{transform:translateY(-4px)}
+}
+@media (max-width:760px){.hero-ecran{width:68%;bottom:0}}
+
+/* ---------- Récit au défilement : de la parcelle au dossier d'export ---------- */
+.recit{margin-top:clamp(8px,2vw,24px)}
+.recit-etapes{counter-reset:none}
+.recit-etape{padding:24px 0 24px 24px;border-left:2px solid var(--band-line);transition:border-color .4s,opacity .4s}
+.recit-etape .n{font-family:var(--f-mono);font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--orange)}
+.recit-etape h3{font-size:clamp(1.5rem,2.4vw,2rem);margin:10px 0 10px;color:var(--band-fg)}
+.recit-etape p{color:var(--band-muted);max-width:44ch}
+.recit-etape.actif{border-color:var(--orange)}
+.recit-mobile{margin-top:18px}
+.recit-ecrans{display:none}
+.recit-lien{display:inline-flex;margin-top:18px;color:var(--orange)}
+@media (min-width:980px){
+  .recit{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(40px,5vw,72px)}
+  .recit-etape{min-height:min(64vh,560px);display:flex;flex-direction:column;justify-content:center}
+  .js .recit-etape:not(.actif){opacity:.42}
+  .recit-mobile{display:none}
+  .recit-ecrans{display:block;position:sticky;top:calc(50vh - 230px);align-self:start}
+  .recit-pile{display:grid}
+  .recit-img{grid-area:1/1;opacity:0;transform:translateY(14px);transition:opacity .5s var(--courbe-douce),transform .6s var(--courbe-douce)}
+  .recit-img.actif{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce){.recit-img{transition:none;transform:none}.recit-etape{transition:none}}
+
+/* ---------- Preuves : normes, formats et réalités du terrain ---------- */
+.preuves-bande{background:var(--bg-2)}
+.preuves-tete{max-width:760px;margin-bottom:clamp(28px,4vw,40px)}
+.preuves-tete h2{margin-top:14px}
+.preuves-grille{display:grid;grid-template-columns:repeat(4,1fr);gap:0 28px}
+.preuves-grille li{display:grid;gap:6px;padding:18px 0;border-top:1px solid var(--line-2)}
+.preuves-grille b{font-family:var(--f-mono);font-size:12.5px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--orange-ink)}
+.preuves-grille span{font-size:15.5px;color:var(--ink-2)}
+@media (max-width:980px){.preuves-grille{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:420px){.preuves-grille{gap:0 16px}.preuves-grille span{font-size:14.5px}}
+
+/* ---------- Moins d'éléments flottants : WhatsApp reste dans le contact, la barre mobile et le pied de page ---------- */
+.whatsapp{display:none!important}
 /* MODERNISATION:FIN */
