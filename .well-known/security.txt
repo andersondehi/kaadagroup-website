@@ -1,0 +1,5 @@
+# Signalement de vulnérabilités · Kaada Group
+Contact: mailto:contact@kaadagroup.com
+Expires: 2027-10-24T00:00:00.000Z
+Preferred-Languages: fr, en
+Canonical: https://kaadagroup.com/.well-known/security.txt

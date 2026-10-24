@@ -1470,4 +1470,29 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
 :root[data-theme="dark"] .btn-produit.sk{color:#7CC79C;border-color:#7CC79C}:root[data-theme="dark"] .btn-produit.d4c{color:#8CBDEB;border-color:#8CBDEB}
 .btn-produit-ico{border-radius:6px;box-shadow:none!important}
 
+/* Formulaires (Netlify Forms) */
+.kf-section{background:var(--bg-2);border-top:1px solid var(--line)}
+.kf-duo{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(28px,5vw,64px);align-items:start}
+.kf-duo .coches{margin-top:20px}
+@media (max-width:900px){.kf-duo{grid-template-columns:1fr}}
+.kf{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:clamp(20px,3vw,32px);box-shadow:var(--ombre-s)}
+.kf-grille{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+.kf-plein{grid-column:1/-1}
+@media (max-width:600px){.kf-grille{grid-template-columns:1fr}}
+.kf-champ label{display:block;font-size:14px;font-weight:600;margin-bottom:6px;color:var(--ink)}
+.kf-req{color:var(--orange-ink)}
+.kf input:not([type=checkbox]),.kf select,.kf textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line-champ,#7E8A80);border-radius:var(--r-s);padding:11px 12px;transition:border-color .2s,box-shadow .2s}
+.kf textarea{resize:vertical;min-height:110px}
+.kf input:focus,.kf select:focus,.kf textarea:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px color-mix(in srgb,var(--orange) 22%,transparent)}
+.kf-consent{display:flex;gap:10px;align-items:flex-start;margin:18px 0;font-size:14.5px;color:var(--ink-2)}
+.kf-consent input{margin-top:4px;width:18px;height:18px;accent-color:var(--orange);flex:none}
+.kf-envoyer{width:100%}
+.kf-note{margin-top:12px;font-size:13px;color:var(--muted);text-align:center}
+.kf-piege{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.d4c .kf input:focus,.d4c .kf select:focus,.d4c .kf textarea:focus{border-color:#1D5C8C;box-shadow:0 0 0 3px rgba(29,92,140,.2)}
+.kf-merci .wrap{max-width:720px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:18px;padding-block:clamp(40px,8vw,90px)}
+.kf-merci-ico{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;background:#E1EEE5;color:#2E7247}
+.kf-merci-ico svg{width:36px;height:36px}
+.kf-merci .actions{justify-content:center}
+
 /* SANKORA:FIN */

@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /merci.html
+Disallow: /en/merci.html
 
 Sitemap: https://kaadagroup.com/sitemap.xml
