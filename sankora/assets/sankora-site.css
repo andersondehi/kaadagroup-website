@@ -341,3 +341,21 @@ form.formulaire { position: relative; }
 @media (max-width: 860px) { .fn-grille { grid-template-columns: 1fr; } .fn-sommaire { position: static; } }
 .engagements.deux { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (max-width: 860px) { .engagements.deux { grid-template-columns: 1fr; } }
+
+/* Formulaire de contact : le même que sur kaadagroup.com (formulaires.py), aux couleurs de Sankora */
+.kf { position: relative; background: var(--surface); color: var(--ink); border-radius: var(--r-xl); padding: clamp(22px, 3vw, 32px); }
+.kf-grille { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px; }
+.kf-champ { min-width: 0; }
+.kf-plein { grid-column: 1 / -1; }
+.kf-champ label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; color: var(--ink); }
+.kf-req { color: var(--sankora); }
+.kf input:not([type=checkbox]), .kf select, .kf textarea { width: 100%; font: 16px/1.4 var(--f-sans); color: var(--ink); background: var(--surface-2); border: 1px solid var(--line-2); border-radius: var(--r-s); padding: 12px 13px; min-height: 48px; }
+.kf textarea { resize: vertical; min-height: 110px; }
+.kf input:focus, .kf select:focus, .kf textarea:focus { outline: 2px solid var(--canopee); outline-offset: 1px; }
+.kf-consent { display: flex; gap: 10px; align-items: flex-start; margin: 18px 0; font-size: 14.5px; color: var(--muted); }
+.kf-consent input { margin-top: 3px; width: 18px; height: 18px; accent-color: var(--sankora); flex: none; }
+.kf-envoyer { width: 100%; justify-content: center; background: var(--sankora); color: #fff; border: 0; }
+.kf-envoyer:hover { background: var(--sankora-hover); }
+.kf-note { margin-top: 12px; font-size: 13px; color: var(--muted); text-align: center; }
+.kf-piege { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+@media (max-width: 600px) { .kf-grille { grid-template-columns: 1fr; } }
