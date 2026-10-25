@@ -12,6 +12,8 @@ Kaada Group est l'entreprise, **Sankora** son produit, **Data4Child** un module 
 | Sankora, accueil de la section | `/sankora`, `/en/sankora` | `sankora.html`, `en/sankora.html` |
 | Sankora, la plateforme en détail | `/sankora/plateforme` | `sankora/plateforme.html` (+ `en/`) |
 | Comment fonctionne Sankora | `/sankora/fonctionnement` | `sankora/fonctionnement.html` (+ `en/`) |
+| Une page par service (6) | `/sankora/services/<service>` | `sankora/services/*.html` (+ `en/`) |
+| Une page par filière (8) | `/sankora/filieres/<filière>` | `sankora/filieres/*.html` (+ `en/`) |
 | Data4Child | `/sankora/data4child/` | `sankora/data4child/index.html` (+ `en/`) |
 | Comment fonctionne Data4Child | `/sankora/data4child/fonctionnement` | `sankora/data4child/fonctionnement.html` (+ `en/`) |
 

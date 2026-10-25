@@ -6,7 +6,7 @@
   document.querySelectorAll("[data-jours-eudr]").forEach(function (el) { el.textContent = jours; });
   /* Loupe : toute capture réelle s'ouvre en grand (pages produits) */
   (function () {
-    var imgs = Array.prototype.slice.call(document.querySelectorAll("img[data-zoom]"));
+    var imgs = Array.prototype.slice.call(document.querySelectorAll("img[data-zoom]")).filter(function (i) { return !i.closest("a"); });
     if (!imgs.length || typeof HTMLDialogElement !== "function") return;
     var en = document.documentElement.lang === "en";
     var T = en ? { ouvrir: "Enlarge the screenshot", fermer: "Close", plus: "Zoom in", moins: "Zoom out", aide: "Click the image to switch between fit and actual size" }
@@ -49,11 +49,13 @@
     dlg.addEventListener("close", function () { grande.removeAttribute("src"); if (dernier && dernier.focus) dernier.focus(); });
     imgs.forEach(function (img) {
       var fig = img.closest("figure") || img.parentElement;
+      img.addEventListener("click", function () { ouvrir(img); });
+      if (fig.querySelector(":scope > .kc-zoom")) return;
       fig.classList.add("kc-zoomable");
       var b = document.createElement("button");
       b.type = "button"; b.className = "kc-zoom"; b.setAttribute("aria-label", T.ouvrir); b.title = T.ouvrir; b.innerHTML = ico(LOUPE);
-      b.addEventListener("click", function () { ouvrir(img); });
-      img.addEventListener("click", function () { ouvrir(img); });
+      /* cadre à plusieurs écrans (récit, défilement) : on agrandit celui qui est affiché */
+      b.addEventListener("click", function () { ouvrir(fig.querySelector(".actif img[data-zoom], img.actif[data-zoom]") || img); });
       fig.appendChild(b);
     });
   })();
