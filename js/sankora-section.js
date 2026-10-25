@@ -69,3 +69,27 @@
   window.addEventListener("resize", maj);
   if ("MutationObserver" in window) new MutationObserver(maj).observe(e, { attributes: true, attributeFilter: ["class"] });
 })();
+
+/* Écrans réels en fondu (accueil Sankora) : pause au survol ou au focus, arrêt si l'utilisateur réduit les animations. */
+(function () {
+  var reduit = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  Array.prototype.forEach.call(document.querySelectorAll("[data-defile]"), function (f) {
+    var imgs = Array.prototype.slice.call(f.querySelectorAll(".defile-pile img"));
+    var pts = Array.prototype.slice.call(f.querySelectorAll(".defile-point"));
+    var titre = f.querySelector(".defile-titre"), i = 0, minuteur = null, pause = false;
+    if (imgs.length < 2) return;
+    var montrer = function (n) {
+      i = (n + imgs.length) % imgs.length;
+      imgs.forEach(function (x, k) { x.classList.toggle("actif", k === i); if (k === i && x.loading === "lazy") x.loading = "eager"; });
+      pts.forEach(function (x, k) { x.classList.toggle("actif", k === i); if (k === i) x.setAttribute("aria-current", "true"); else x.removeAttribute("aria-current"); });
+      if (titre) titre.textContent = imgs[i].getAttribute("data-titre") || "";
+    };
+    var lancer = function () { if (reduit) return; clearInterval(minuteur); minuteur = setInterval(function () { if (!pause && !document.hidden) montrer(i + 1); }, 4500); };
+    pts.forEach(function (x, k) { x.addEventListener("click", function () { montrer(k); lancer(); }); });
+    f.addEventListener("mouseenter", function () { pause = true; });
+    f.addEventListener("mouseleave", function () { pause = false; });
+    f.addEventListener("focusin", function () { pause = true; });
+    f.addEventListener("focusout", function () { pause = false; });
+    lancer();
+  });
+})();
