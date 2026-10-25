@@ -1805,6 +1805,16 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
 .sf .sf-credit { position: absolute; right: 12px; bottom: 8px; margin: 0; font-size: 11px; color: rgba(255,255,255,.75); }
 .sf .sf-credit a { color: inherit; }
 .sf .sf-intro { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
+.sf .sf-intro.sans-photo { grid-template-columns: minmax(0, 1fr); }
+.sf .sf-intro.sans-photo .sf-texte { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: clamp(28px, 5vw, 72px); align-items: start; }
+.sf .sf-intro.sans-photo .sf-texte > .eyebrow, .sf .sf-intro.sans-photo .sf-texte > h2 { grid-column: 1; }
+.sf .sf-intro.sans-photo .sf-texte > p { grid-column: 1; }
+.sf .sf-intro.sans-photo .sf-chiffres { grid-column: 2; grid-row: 1 / span 6; margin-top: 0; grid-template-columns: 1fr; }
+@media (max-width: 900px) { .sf .sf-intro.sans-photo .sf-texte { grid-template-columns: 1fr; } .sf .sf-intro.sans-photo .sf-chiffres { grid-column: 1; grid-row: auto; margin-top: 24px; } }
+/* Bannière sans photo : fond sombre de la charte, motif de parcelles */
+.sf .sf-banniere.sans-photo { background: radial-gradient(900px 420px at 85% 10%, color-mix(in srgb, var(--orange) 22%, transparent), transparent 70%), linear-gradient(135deg, #14231b, #0e1612 70%); }
+.sf .sf-banniere.sans-photo .sf-voile { background: repeating-linear-gradient(115deg, rgba(255,255,255,.035) 0 2px, transparent 2px 46px); }
+.sf .sf-banniere.sans-photo { min-height: clamp(360px, 52vh, 520px); }
 .sf .sf-produit { margin: 0; position: sticky; top: 150px; }
 .sf .sf-produit img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r-l, 18px); box-shadow: var(--ombre); }
 .sf .sf-produit figcaption { margin-top: 8px; font-size: 12px; color: var(--muted); }
