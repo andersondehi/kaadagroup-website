@@ -1831,6 +1831,8 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
 .sf .sf-chiffre { padding: 18px; border-radius: var(--r); background: var(--bg-2); }
 .sf .sf-chiffre b { display: block; font-family: var(--f-titre); font-size: 30px; line-height: 1.1; color: var(--orange-ink, var(--orange)); }
 .sf .sf-chiffre span { display: block; margin-top: 6px; font-size: 14px; color: var(--ink); }
+.sf .sf-source { display: block; margin-top: 8px; font-size: 11.5px; font-style: italic; color: var(--muted); line-height: 1.4; }
+.sf .sf-source a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 .sf .sf-pays { list-style: none; margin: 0; padding: 0; counter-reset: pays; display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
 .sf .pays-cite { white-space: nowrap; }
 .sf .drapeau { display: inline-block; width: 1.15em; height: auto; aspect-ratio: 4 / 3; margin: 0 .3em .1em 0; vertical-align: middle; border-radius: 2px; box-shadow: 0 0 0 1px rgba(0,0,0,.12); }
