@@ -74,41 +74,31 @@
   status = 301
   force = true
 
-# Sankora est un sous-site à sa propre charte : /sankora est servie par sankora/index.html
-# (anciennes pages au gabarit Kaada Group redirigées définitivement, 301)
-[[redirects]]
-  from = "/sankora.html"
-  to = "/sankora"
-  status = 301
-  force = true
-[[redirects]]
-  from = "/en/sankora.html"
-  to = "/en/sankora"
-  status = 301
-  force = true
+# Section Sankora (charte Kaada Group) : /sankora est servie par sankora.html ; la plateforme en détail
+# et les pages « Comment ça marche » vivent sous /sankora/ (anciennes adresses redirigées, 301)
 [[redirects]]
   from = "/sankora-fonctionnement"
-  to = "/sankora"
+  to = "/sankora/fonctionnement"
   status = 301
   force = true
 [[redirects]]
   from = "/sankora-fonctionnement.html"
-  to = "/sankora"
+  to = "/sankora/fonctionnement"
   status = 301
   force = true
 [[redirects]]
   from = "/en/sankora-fonctionnement"
-  to = "/en/sankora"
+  to = "/en/sankora/fonctionnement"
   status = 301
   force = true
 [[redirects]]
   from = "/en/sankora-fonctionnement.html"
-  to = "/en/sankora"
+  to = "/en/sankora/fonctionnement"
   status = 301
   force = true
 [[redirects]]
   from = "/sankora"
-  to = "/sankora/index.html"
+  to = "/sankora.html"
   status = 200
   force = true
 [[redirects]]
@@ -118,7 +108,7 @@
   force = true
 [[redirects]]
   from = "/en/sankora"
-  to = "/en/sankora/index.html"
+  to = "/en/sankora.html"
   status = 200
   force = true
 [[redirects]]
