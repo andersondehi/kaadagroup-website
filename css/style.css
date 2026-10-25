@@ -1798,7 +1798,7 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
 .sf .sf-voile { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,18,14,.25) 0%, rgba(10,18,14,.55) 45%, rgba(10,18,14,.88) 100%); }
 .sf .sf-banniere-texte { position: relative; padding-block: clamp(80px, 10vw, 140px) clamp(40px, 5vw, 64px); }
 .sf .sf-banniere .ariane, .sf .sf-banniere .ariane a, .sf .sf-banniere .ariane span { color: rgba(255,255,255,.85); }
-.sf .sf-banniere h1 { color: #fff; max-width: 22ch; margin-top: 14px; }
+.sf .sf-banniere h1 { color: #fff; max-width: 22ch; margin-top: 22px; }
 .sf .sf-banniere .lead { color: rgba(255,255,255,.88); max-width: 60ch; margin-top: 16px; }
 .sf .sf-rdue { display: inline-block; margin-top: 22px; padding: 5px 12px; border-radius: 99px; font-family: var(--f-mono); font-size: 12px; letter-spacing: .04em; background: rgba(255,255,255,.14); color: #fff; border: 1px solid rgba(255,255,255,.3); }
 .sf .sf-rdue.oui { background: var(--orange); border-color: var(--orange); color: var(--on-orange, #fff); }
@@ -1845,7 +1845,8 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
 .sf .sf-banniere.sans-photo { min-height: clamp(300px, 42vh, 440px) !important; }
 .sf .sf-defis { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 @media (min-width: 1000px) { .sf .sf-defis { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.sf .sf-outils { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+.sf .sf-outils { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 16px; }
+@media (max-width: 520px) { .sf .sf-outils { grid-template-columns: 1fr; } }
 .sf .sf-outil { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 14px; padding: 22px; border: 1px solid var(--line); border-radius: var(--r-l, 16px); background: var(--surface, #fff); }
 .sf .sf-outil h3 { margin: 4px 0 6px; font-size: 1.1rem; }
 .sf .sf-outil p { margin: 0; color: var(--muted); }
