@@ -1792,7 +1792,10 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
 .sf .sf-produit img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r-l, 18px); box-shadow: var(--ombre); }
 .sf .sf-produit figcaption { margin-top: 8px; font-size: 12px; color: var(--muted); }
 .sf .sf-produit figcaption a { color: inherit; }
-.sf .sf-texte p { color: var(--muted); max-width: 66ch; }
+.sf .sf-texte p { color: var(--muted); max-width: 66ch; margin: 14px 0 0; }
+.sf .sf-texte h2 { margin-bottom: 6px; }
+.sp h2.t-l + p.lead { margin-top: 16px; }
+.sp .tete-section { margin-bottom: clamp(24px, 3vw, 40px); }
 .sf .sf-chiffres { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-top: 28px; }
 .sf .sf-chiffre { padding: 18px; border-radius: var(--r); background: var(--bg-2); }
 .sf .sf-chiffre b { display: block; font-family: var(--f-titre); font-size: 30px; line-height: 1.1; color: var(--orange-ink, var(--orange)); }
