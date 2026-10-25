@@ -1625,6 +1625,14 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
 .sk-renvoi-recit{margin-top:28px;max-width:62ch;font-size:17px}
 @media (max-width:640px){.sk-renvoi{grid-template-columns:1fr;gap:16px}}
 
+/* Captures réelles de Sankora à la place des illustrations dessinées (captures_reelles.py) */
+.ph.ph-capture{background:var(--bg-2);border:1px solid var(--line)}
+.ph.ph-capture::before{display:none}
+.ph.ph-capture img{object-fit:cover;object-position:left top}
+.ph.ph-capture img,.ph.ph-capture:hover img{transform:none}
+.capture-vignette{display:block;width:280px;max-width:100%;margin-top:16px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--bg-2)}
+.capture-vignette img{display:block;width:100%;height:auto}
+
 
 /* Section Sankora : jetons de la page ramenés à ceux de Kaada Group (couleurs, polices, thème sombre compris) */
 .sk-site {

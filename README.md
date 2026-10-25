@@ -26,6 +26,15 @@ Kaada Group est l'entreprise, **Sankora** son produit, **Data4Child** un module 
 - Tout le contenu Sankora et Data4Child (captures réelles, récit en captures, démonstrations, FAQ, filières) vit dans
   cette section ; le reste du site n'en garde que de brèves références avec un lien vers `/sankora`.
 
+## Images : uniquement des écrans réels de Sankora
+
+Pour parler de Sankora, de Data4Child ou de l'agritech, le site n'utilise **aucune image créée par IA ni écran dessiné** :
+seulement des captures réelles de l'application (`assets/img/captures/`, prises sur la démonstration, données fictives).
+`captures_reelles.py` remplace les anciennes illustrations agricoles par ces captures ; les pictogrammes dessinés des
+filières sont retirés en attendant de vraies photos de terrain. Les illustrations des services informatiques, des secteurs
+hors agriculture et de la page À propos sont conservées. Les images de partage de Sankora et Data4Child
+(`assets/img/sankora/og-*.jpg`) montrent aussi un écran réel (`generer_og.py`).
+
 ## Pages produits : ne pas éditer à la main
 
 La section Sankora (module `section_sankora.py` ; textes de l'accueil dans `sankora-site/`), les pages Data4Child, les entrées de menu et les renvois du reste du site sont produits par l'outil
@@ -34,6 +43,7 @@ La section Sankora (module `section_sankora.py` ; textes de l'accueil dans `sank
 ```bash
 python3 ajouter_sankora.py ../../../kaadagroup-website
 python3 moderniser_site.py ../../../kaadagroup-website
+python3 captures_reelles.py ../../../kaadagroup-website
 python3 structure_seo.py   ../../../kaadagroup-website   # obligatoire, en dernier
 ```
 
