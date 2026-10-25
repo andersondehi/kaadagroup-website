@@ -1618,6 +1618,12 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
   .fn-sommaire{position:sticky;top:calc(var(--entete) + 32px);align-self:start}
 }
 @media (max-width:979px){.fn-sommaire{padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}}
+.sk-renvoi{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:start;max-width:880px}
+.sk-renvoi .lead{margin-top:12px}
+.sk-renvoi .actions{margin-top:20px}
+.sk-renvoi-ico{width:56px;height:56px;flex:none}
+.sk-renvoi-recit{margin-top:28px;max-width:62ch;font-size:17px}
+@media (max-width:640px){.sk-renvoi{grid-template-columns:1fr;gap:16px}}
 
 /* SANKORA:FIN */
 /* MODERNISATION:DEBUT */

@@ -10,13 +10,15 @@ Kaada Group est l'entreprise, **Sankora** son produit, **Data4Child** un module 
 | Page | Adresse publique | Fichier |
 |---|---|---|
 | Sankora (sous-site, charte Sankora) | `/sankora`, `/en/sankora` | `sankora/index.html`, `en/sankora/index.html`, `sankora/assets/` |
-| Data4Child | `/sankora/data4child/` | `sankora/data4child/index.html` (+ `en/`) |
-| Comment fonctionne Data4Child | `/sankora/data4child/fonctionnement` | `sankora/data4child/fonctionnement.html` (+ `en/`) |
+| Data4Child (sous-site Sankora) | `/sankora/data4child/` | `sankora/data4child/index.html` (+ `en/`) |
+| Comment fonctionne Data4Child (sous-site Sankora) | `/sankora/data4child/fonctionnement` | `sankora/data4child/fonctionnement.html` (+ `en/`) |
 
 - Les adresses déclarées aux moteurs (balises canoniques, hreflang, `sitemap.xml`) sont **sans `.html`**.
 - Les anciennes adresses de Data4Child (`/data4child`, `/data4child-fonctionnement`, avec ou sans `.html`, FR et EN)
   sont redirigées en 301 par `netlify.toml`, qui fixe aussi `/sankora` sur `sankora.html`.
 - Les pages sous `sankora/` et la page `404.html` utilisent des liens absolus (`/assets/…`, `/css/…`).
+- **Tout ce qui concerne Sankora et Data4Child vit sur le sous-site Sankora.** Le site Kaada Group n'y fait que de brèves
+  références (bandeau, entrée de menu, court encart d'accueil, pied de page), avec un lien vers le sous-site.
 - **Sankora est un sous-site** avec sa propre charte graphique (logo, couleurs, polices Outfit, Figtree et Geist Mono hébergées
   dans `sankora/assets/fonts/`), son propre menu et son pied de page ; le site Kaada Group y renvoie depuis son menu,
   son accueil et son pied de page. Les anciennes adresses (`/sankora.html`, `/sankora-fonctionnement`, FR et EN)
