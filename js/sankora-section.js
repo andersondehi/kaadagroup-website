@@ -1,8 +1,9 @@
+/* Section Sankora : barre de navigation (menus déroulants). Généré par section_sankora.py. */
 /* Sankora · sous-site de kaadagroup.com : menus déroulants (survol ou clic sur grand écran, accordéon sur téléphone). */
 (function () {
-  var items = Array.prototype.slice.call(document.querySelectorAll(".menu-item"));
-  var menu = document.getElementById("menu");
-  var burger = document.getElementById("burger");
+  var items = Array.prototype.slice.call(document.querySelectorAll(".sk-sousnav .menu-item"));
+  var menu = document.getElementById("menu-sankora");
+  var burger = document.getElementById("burger-sankora");
   if (!menu || !burger) return;
   var grandEcran = window.matchMedia("(min-width: 1141px) and (hover: hover)");
 
@@ -43,7 +44,7 @@
     if (e.target.closest("a")) { fermerTout(); fermerMenuMobile(); }
   });
   document.addEventListener("click", function (e) {
-    if (!e.target.closest(".menu") && !e.target.closest(".burger")) { fermerTout(); fermerMenuMobile(); }
+    if (!e.target.closest(".sk-sousnav")) { fermerTout(); fermerMenuMobile(); }
   });
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
@@ -52,4 +53,19 @@
     if (ouvert) ouvert.querySelector(".menu-btn").focus();
     else if (menu.classList.contains("ouvert")) { fermerMenuMobile(); burger.focus(); }
   });
+})();
+
+
+/* La barre Sankora se cale sous l'en-tête Kaada Group quand celui-ci est visible (il se masque en descendant). */
+(function () {
+  var e = document.getElementById("entete"), n = document.querySelector(".sk-sousnav");
+  if (!e || !n) return;
+  var maj = function () {
+    var h = e.classList.contains("masque") ? 0 : e.offsetHeight;
+    n.style.setProperty("--sk-haut", h + "px");
+  };
+  maj();
+  window.addEventListener("scroll", maj, { passive: true });
+  window.addEventListener("resize", maj);
+  if ("MutationObserver" in window) new MutationObserver(maj).observe(e, { attributes: true, attributeFilter: ["class"] });
 })();

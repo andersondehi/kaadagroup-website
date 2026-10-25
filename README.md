@@ -9,27 +9,41 @@ Kaada Group est l'entreprise, **Sankora** son produit, **Data4Child** un module 
 
 | Page | Adresse publique | Fichier |
 |---|---|---|
-| Sankora (sous-site, charte Sankora) | `/sankora`, `/en/sankora` | `sankora/index.html`, `en/sankora/index.html`, `sankora/assets/` |
+| Sankora, accueil de la section | `/sankora`, `/en/sankora` | `sankora.html`, `en/sankora.html` |
+| Sankora, la plateforme en détail | `/sankora/plateforme` | `sankora/plateforme.html` (+ `en/`) |
+| Comment fonctionne Sankora | `/sankora/fonctionnement` | `sankora/fonctionnement.html` (+ `en/`) |
 | Data4Child | `/sankora/data4child/` | `sankora/data4child/index.html` (+ `en/`) |
 | Comment fonctionne Data4Child | `/sankora/data4child/fonctionnement` | `sankora/data4child/fonctionnement.html` (+ `en/`) |
 
 - Les adresses déclarées aux moteurs (balises canoniques, hreflang, `sitemap.xml`) sont **sans `.html`**.
-- Les anciennes adresses de Data4Child (`/data4child`, `/data4child-fonctionnement`, avec ou sans `.html`, FR et EN)
-  sont redirigées en 301 par `netlify.toml`, qui fixe aussi `/sankora` sur `sankora.html`.
+- Les anciennes adresses (`/data4child`, `/data4child-fonctionnement`, `/sankora-fonctionnement`, avec ou sans `.html`,
+  FR et EN) sont redirigées en 301 par `netlify.toml`, qui sert aussi `/sankora` depuis `sankora.html`.
 - Les pages sous `sankora/` et la page `404.html` utilisent des liens absolus (`/assets/…`, `/css/…`).
-- **Sankora est un sous-site** avec sa propre charte graphique (logo, couleurs, polices Outfit, Figtree et Geist Mono hébergées
-  dans `sankora/assets/fonts/`), son propre menu et son pied de page ; le site Kaada Group y renvoie depuis son menu,
-  son accueil et son pied de page. Les anciennes adresses (`/sankora.html`, `/sankora-fonctionnement`, FR et EN)
-  sont redirigées en 301 vers `/sankora` par `netlify.toml`.
+- **La section Sankora garde la charte de Kaada Group** (couleurs, polices, menu plein écran, île de navigation, pied de page).
+  Ses pages s'en distinguent par trois points : le logo Sankora remplace celui de Kaada Group (en-tête, menu plein écran,
+  pied de page), le bandeau « Visiter le site Sankora » n'y figure pas, et une barre de navigation propre à Sankora
+  (Services, Solutions, Filières, RDUE, À propos, menus déroulants) se place sous l'en-tête.
+- Tout le contenu Sankora et Data4Child (captures réelles, récit en captures, démonstrations, FAQ, filières) vit dans
+  cette section ; le reste du site n'en garde que de brèves références avec un lien vers `/sankora`.
+
+## Images : uniquement des écrans réels de Sankora
+
+Pour parler de Sankora, de Data4Child ou de l'agritech, le site n'utilise **aucune image créée par IA ni écran dessiné** :
+seulement des captures réelles de l'application (`assets/img/captures/`, prises sur la démonstration, données fictives).
+`captures_reelles.py` remplace les anciennes illustrations agricoles par ces captures ; les pictogrammes dessinés des
+filières sont retirés en attendant de vraies photos de terrain. Les illustrations des services informatiques, des secteurs
+hors agriculture et de la page À propos sont conservées. Les images de partage de Sankora et Data4Child
+(`assets/img/sankora/og-*.jpg`) montrent aussi un écran réel (`generer_og.py`).
 
 ## Pages produits : ne pas éditer à la main
 
-Le sous-site Sankora (source : `outils/site-netlify/sankora-site/`), les pages Data4Child, leurs entrées de menu et l'encart de l'accueil sont produits par l'outil
+La section Sankora (module `section_sankora.py` ; textes de l'accueil dans `sankora-site/`), les pages Data4Child, les entrées de menu et les renvois du reste du site sont produits par l'outil
 `outils/site-netlify/` du dépôt `kaadagroup-charte`. Modifier les textes là-bas, puis lancer **dans cet ordre** :
 
 ```bash
 python3 ajouter_sankora.py ../../../kaadagroup-website
 python3 moderniser_site.py ../../../kaadagroup-website
+python3 captures_reelles.py ../../../kaadagroup-website
 python3 structure_seo.py   ../../../kaadagroup-website   # obligatoire, en dernier
 ```
 
