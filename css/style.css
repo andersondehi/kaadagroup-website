@@ -1671,6 +1671,17 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
 .sk-site .bande .bref-liens a { color: var(--band-fg, #fff); }
 @media (max-width: 980px) { .sk-site .bref-atouts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 620px) { .sk-site .bref-atouts { grid-template-columns: 1fr; } }
+/* Blocs de services de l'accueil : titre et chapeau sur toute la largeur, puis la capture et les cartes côte à côte */
+.sk-site .bloc > div:first-child { display: contents; }
+.sk-site .bloc > div:first-child > .surtitre, .sk-site .bloc > div:first-child > .nom-bloc, .sk-site .bloc > div:first-child > .chapeau { grid-column: 1 / -1; max-width: 72ch; }
+.sk-site div.bloc { row-gap: 0; }
+.sk-site .bloc .nom-bloc { margin-top: 10px; }
+.sk-site .bloc .chapeau { margin: 12px 0 28px; }
+.sk-site .bloc .liste-services { grid-column: 1; grid-row: 4; margin-top: 0; }
+.sk-site .bloc .bloc-visuel { grid-column: 2; grid-row: 4; align-self: start; }
+.sk-site .bloc-inverse .liste-services { grid-column: 2; }
+.sk-site .bloc-inverse .bloc-visuel { grid-column: 1; order: 0; }
+@media (max-width: 900px) { .sk-site .bloc .liste-services, .sk-site .bloc .bloc-visuel { grid-column: 1; grid-row: auto; } }
 /* Calendrier du RDUE */
 .sk-site .rf-tete { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: end; margin-bottom: clamp(32px, 4vw, 48px); }
 .sk-site .rf-tete .chapeau { max-width: 62ch; }
@@ -1689,6 +1700,11 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
 .sk-site .rf-corps { padding-left: 14px; }
 .sk-site .rf-corps h3 { font-size: 1.2rem; margin: 0 0 6px; }
 .sk-site .rf-corps p { margin: 0 0 8px; color: var(--muted); max-width: 70ch; }
+@media (min-width: 1000px) {
+  .sk-site .rf-corps { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); column-gap: 32px; align-items: start; }
+  .sk-site .rf-corps h3, .sk-site .rf-corps p:not(.rf-vous) { grid-column: 1; }
+  .sk-site .rf-corps p.rf-vous { grid-column: 2; grid-row: 1 / span 2; margin: 0; }
+}
 .sk-site .rf-corps p.rf-vous { padding: 10px 14px; border-left: 3px solid var(--orange); background: var(--bg-2); border-radius: 0 8px 8px 0; color: var(--ink); font-size: 15px; }
 .sk-site .rf-jalon.proche .rf-corps h3 { color: var(--orange-ink, var(--orange)); }
 @media (max-width: 760px) {
@@ -1763,7 +1779,8 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
 .sp .sp-profil h3 { margin: 0 0 4px; font-size: 1.02rem; }
 .sp .sp-profil p { margin: 0; color: var(--muted); font-size: 15px; }
 .sp .sp-appel-txt { font-family: var(--f-titre); font-size: clamp(26px, 3.2vw, 40px); line-height: 1.15; max-width: 30ch; margin: 14px 0 0; color: var(--band-fg, #fff); }
-.sp .sp-faq { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 72px); }
+.sp .sp-faq { columns: 2 400px; column-gap: 48px; }
+.sp .sp-faq details { break-inside: avoid; }
 .sp .sp-faq details { border-bottom: 1px solid var(--line); }
 .sp .sp-faq summary { cursor: pointer; padding: 16px 30px 16px 0; font-weight: 600; list-style: none; position: relative; }
 .sp .sp-faq summary::-webkit-details-marker { display: none; }
@@ -1800,7 +1817,7 @@ a.tuile:active,a.cas:active,a.carte-article:active,.grille-exp>a:active{transfor
 .sf .sf-chiffre { padding: 18px; border-radius: var(--r); background: var(--bg-2); }
 .sf .sf-chiffre b { display: block; font-family: var(--f-titre); font-size: 30px; line-height: 1.1; color: var(--orange-ink, var(--orange)); }
 .sf .sf-chiffre span { display: block; margin-top: 6px; font-size: 14px; color: var(--ink); }
-.sf .sf-pays { list-style: none; margin: 0; padding: 0; counter-reset: pays; display: grid; gap: 10px; }
+.sf .sf-pays { list-style: none; margin: 0; padding: 0; counter-reset: pays; display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
 .sf .pays-cite { white-space: nowrap; }
 .sf .drapeau { display: inline-block; width: 1.15em; height: auto; aspect-ratio: 4 / 3; margin: 0 .3em .1em 0; vertical-align: middle; border-radius: 2px; box-shadow: 0 0 0 1px rgba(0,0,0,.12); }
 .sf .drapeau-liste { grid-row: span 2; width: 44px; height: 33px; border-radius: 4px; object-fit: cover; box-shadow: 0 0 0 1px rgba(0,0,0,.12); align-self: center; }
